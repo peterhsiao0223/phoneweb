@@ -1,0 +1,510 @@
+{% extends "app/base_site.html" %}
+
+{% block title %} Table Dynamic {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+  <link href="/static/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+  <link href="/static/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+  <link href="/static/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+  <link href="/static/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+  <link href="/static/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+{% endblock stylesheets %}
+
+{% block content %}
+  <div class="right_col" role="main">
+    <div class="">
+      <div class="page-title">
+        <div class="title_left">
+          <h3>庫存查詢</h3>
+        </div>
+
+        <div class="title_right">
+          <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search for...">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button">Go!</button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="clearfix"></div>
+
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>{{phone_name_title_list|first}} <small>{{phone_name_title_list|last}}</small></h2>
+              <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Settings 1</a>
+                    </li>
+                    <li><a href="#">Settings 2</a>
+                    </li>
+                  </ul>
+                </li>
+                <li><a class="close-link"><i class="fa fa-close"></i></a>
+                </li>
+              </ul>
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+
+            {% if select_type == 'all' %}
+            <div class="table-responsive">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th style="white-space:nowrap;">手機型號</th>
+                      {% for title in titles %}
+                      <th>{{title}}</th>
+                      {% endfor %}
+                    </tr> 
+                  </thead>
+                  <tbody>
+                    {% for phone_name_title,stock_name_manage_list in stock_name_manage_lists %}
+                    <tr>
+                      <td rowspan="2"><a href="/manage/stock_name_manage_order/{{stock_name_manage_list.phone_name_num}}">{{phone_name_title}}</a></td>
+                      {% if stock_name_manage_list.phone_fix_elements_1 == 'none' %}
+                      <!-- <td></td> -->
+                      {% else %}
+                      <td>{{stock_name_manage_list.phone_fix_elements_1}}</td>
+                      {% endif %}
+                      {% if stock_name_manage_list.phone_fix_elements_2 == 'none' %}
+                      <td></td>
+                      {% else %}
+                      <td>{{stock_name_manage_list.phone_fix_elements_2}}</td>
+                      {% endif %}
+                      {% if stock_name_manage_list.phone_fix_elements_3 == 'none' %}
+                      <td></td>
+                      {% else %}
+                      <td>{{stock_name_manage_list.phone_fix_elements_3}}</td>
+                      {% endif %}
+                      {% if stock_name_manage_list.phone_fix_elements_4 == 'none' %}
+                      <td></td>
+                      {% else %}
+                      <td>{{stock_name_manage_list.phone_fix_elements_4}}</td>
+                      {% endif %}
+                      {% if stock_name_manage_list.phone_fix_elements_5 == 'none' %}
+                      <td></td>
+                      {% else %}
+                      <td>{{stock_name_manage_list.phone_fix_elements_5}}</td>
+                      {% endif %}
+                      {% if stock_name_manage_list.phone_fix_elements_6 == 'none' %}
+                      <td></td>
+                      {% else %}
+                      <td>{{stock_name_manage_list.phone_fix_elements_6}}</td>
+                      {% endif %}
+                      {% if stock_name_manage_list.phone_fix_elements_7 == 'none' %}
+                      <td></td>
+                      {% else %}
+                      <td>{{stock_name_manage_list.phone_fix_elements_7}}</td>
+                      {% endif %}
+                      {% if stock_name_manage_list.phone_fix_elements_8 == 'none' %}
+                      <td></td>
+                      {% else %}
+                      <td>{{stock_name_manage_list.phone_fix_elements_8}}</td>
+                      {% endif %}
+                      {% if stock_name_manage_list.phone_fix_elements_9 == 'none' %}
+                      <td></td>
+                      {% else %}
+                      <td>{{stock_name_manage_list.phone_fix_elements_9}}</td>
+                      {% endif %}
+                      {% if stock_name_manage_list.phone_fix_elements_10 == 'none' %}
+                      <td></td>
+                      {% else %}
+                      <td>{{stock_name_manage_list.phone_fix_elements_10}}</td>
+                      {% endif %}
+                      {% if stock_name_manage_list.phone_fix_elements_11 == 'none' %}
+                      <td></td>
+                      {% else %}
+                      <td>{{stock_name_manage_list.phone_fix_elements_11}}</td>
+                      {% endif %}
+                      {% if stock_name_manage_list.phone_fix_elements_12 == 'none' %}
+                      <td></td>
+                      {% else %}
+                      <td>{{stock_name_manage_list.phone_fix_elements_12}}</td>
+                      {% endif %}
+                      {% if stock_name_manage_list.phone_fix_elements_13 == 'none' %}
+                      <td></td>
+                      {% else %}
+                      <td>{{stock_name_manage_list.phone_fix_elements_13}}</td>
+                      {% endif %}
+                      {% if stock_name_manage_list.phone_fix_elements_14 == 'none' %}
+                      <td></td>
+                      {% else %}
+                      <td>{{stock_name_manage_list.phone_fix_elements_14}}</td>
+                      {% endif %}
+                      {% if stock_name_manage_list.phone_fix_elements_15 == 'none' %}
+                      <td></td>
+                      {% else %}
+                      <td>{{stock_name_manage_list.phone_fix_elements_15}}</td>
+                      {% endif %}
+                      {% if stock_name_manage_list.phone_fix_elements_16 == 'none' %}
+                      <td></td>
+                      {% else %}
+                      <td>{{stock_name_manage_list.phone_fix_elements_16}}</td>
+                      {% endif %}
+                      {% if stock_name_manage_list.phone_fix_elements_17 == 'none' %}
+                      <td></td>
+                      {% else %}
+                      <td>{{stock_name_manage_list.phone_fix_elements_17}}</td>
+                      {% endif %}
+                      {% if stock_name_manage_list.phone_fix_elements_18 == 'none' %}
+                      <td></td>
+                      {% else %}
+                      <td>{{stock_name_manage_list.phone_fix_elements_18}}</td>
+                      {% endif %}
+                      {% if stock_name_manage_list.phone_fix_elements_19 == 'none' %}
+                      <td></td>
+                      {% else %}
+                      <td>{{stock_name_manage_list.phone_fix_elements_19}}</td>
+                      {% endif %}
+                      {% if stock_name_manage_list.phone_fix_elements_20 == 'none' %}
+                      <td></td>
+                      {% else %}
+                      <td>{{stock_name_manage_list.phone_fix_elements_20}}</td>         
+                      {% endif %}
+                    </tr>
+                    <tr>
+                    <!-- <td></td> -->
+                      {% if stock_name_manage_list.phone_fix_elements_1 == 'none' %}
+                      <td></td>
+                      {% else %}
+                      <td>{{stock_name_manage_list.phone_fix_elements_num_1}}</td>
+                      {% endif %}
+                      {% if stock_name_manage_list.phone_fix_elements_2 == 'none' %}
+                      <td></td>
+                      {% else %}
+                      <td>{{stock_name_manage_list.phone_fix_elements_num_2}}</td>
+                      {% endif %}
+                      {% if stock_name_manage_list.phone_fix_elements_3 == 'none' %}
+                      <td></td>
+                      {% else %}
+                      <td>{{stock_name_manage_list.phone_fix_elements_num_3}}</td>
+                      {% endif %}
+                      {% if stock_name_manage_list.phone_fix_elements_4 == 'none' %}
+                      <td></td>
+                      {% else %}
+                      <td>{{stock_name_manage_list.phone_fix_elements_num_4}}</td>
+                      {% endif %}
+                      {% if stock_name_manage_list.phone_fix_elements_5 == 'none' %}
+                      <td></td>
+                      {% else %}
+                      <td>{{stock_name_manage_list.phone_fix_elements_num_5}}</td>
+                      {% endif %}
+                      {% if stock_name_manage_list.phone_fix_elements_6 == 'none' %}
+                      <td></td>
+                      {% else %}
+                      <td>{{stock_name_manage_list.phone_fix_elements_num_6}}</td>
+                      {% endif %}
+                      {% if stock_name_manage_list.phone_fix_elements_7 == 'none' %}
+                      <td></td>
+                      {% else %}
+                      <td>{{stock_name_manage_list.phone_fix_elements_num_7}}</td>
+                      {% endif %}
+                      {% if stock_name_manage_list.phone_fix_elements_8 == 'none' %}
+                      <td></td>
+                      {% else %}
+                      <td>{{stock_name_manage_list.phone_fix_elements_num_8}}</td>
+                      {% endif %}
+                      {% if stock_name_manage_list.phone_fix_elements_9 == 'none' %}
+                      <td></td>
+                      {% else %}
+                      <td>{{stock_name_manage_list.phone_fix_elements_num_9}}</td>
+                      {% endif %}
+                      {% if stock_name_manage_list.phone_fix_elements_10 == 'none' %}
+                      <td></td>
+                      {% else %}
+                      <td>{{stock_name_manage_list.phone_fix_elements_num_10}}</td>
+                      {% endif %}
+                      {% if stock_name_manage_list.phone_fix_elements_11 == 'none' %}
+                      <td></td>
+                      {% else %}
+                      <td>{{stock_name_manage_list.phone_fix_elements_num_11}}</td>
+                      {% endif %}
+                      {% if stock_name_manage_list.phone_fix_elements_12 == 'none' %}
+                      <td></td>
+                      {% else %}
+                      <td>{{stock_name_manage_list.phone_fix_elements_num_12}}</td>
+                      {% endif %}
+                      {% if stock_name_manage_list.phone_fix_elements_13 == 'none' %}
+                      <td></td>
+                      {% else %}
+                      <td>{{stock_name_manage_list.phone_fix_elements_num_13}}</td>
+                      {% endif %}
+                      {% if stock_name_manage_list.phone_fix_elements_14 == 'none' %}
+                      <td></td>
+                      {% else %}
+                      <td>{{stock_name_manage_list.phone_fix_elements_num_14}}</td>
+                      {% endif %}
+                      {% if stock_name_manage_list.phone_fix_elements_15 == 'none' %}
+                      <td></td>
+                      {% else %}
+                      <td>{{stock_name_manage_list.phone_fix_elements_num_15}}</td>
+                      {% endif %}
+                      {% if stock_name_manage_list.phone_fix_elements_16 == 'none' %}
+                      <td></td>
+                      {% else %}
+                      <td>{{stock_name_manage_list.phone_fix_elements_num_16}}</td>
+                      {% endif %}
+                      {% if stock_name_manage_list.phone_fix_elements_17 == 'none' %}
+                      <td></td>
+                      {% else %}
+                      <td>{{stock_name_manage_list.phone_fix_elements_num_17}}</td>
+                      {% endif %}
+                      {% if stock_name_manage_list.phone_fix_elements_18 == 'none' %}
+                      <td></td>
+                      {% else %}
+                      <td>{{stock_name_manage_list.phone_fix_elements_num_18}}</td>
+                      {% endif %}
+                      {% if stock_name_manage_list.phone_fix_elements_19 == 'none' %}
+                      <td></td>
+                      {% else %}
+                      <td>{{stock_name_manage_list.phone_fix_elements_num_19}}</td>
+                      {% endif %}
+                      {% if stock_name_manage_list.phone_fix_elements_20 == 'none' %}
+                      <td></td>
+                      {% else %}
+                      <td>{{stock_name_manage_list.phone_fix_elements_num_20}}</td>         
+                      {% endif %}
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            {% elif select_type == 'one' %}
+              <div class="table-responsive">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th style="white-space:nowrap;">項目 / 數量</th>
+                      {% if stock_name_manage.phone_fix_elements_1 == 'none' %}
+                      <th></th>
+                      {% else %}
+                      <th style="white-space:nowrap;">{{stock_name_manage.phone_fix_elements_1}}</th>
+                      {% endif %}             
+                      {% if stock_name_manage.phone_fix_elements_2 == 'none' %}
+                      <th></th>
+                      {% else %}
+                      <th style="white-space:nowrap;">{{stock_name_manage.phone_fix_elements_2}}</th>  
+                      {% endif %}
+                      {% if stock_name_manage.phone_fix_elements_3 == 'none' %}
+                      <th></th>
+                      {% else %}
+                      <th style="white-space:nowrap;">{{stock_name_manage.phone_fix_elements_3}}</th>  
+                      {% endif %}
+                      {% if stock_name_manage.phone_fix_elements_4 == 'none' %}
+                      <th></th>
+                      {% else %}
+                      <th style="white-space:nowrap;">{{stock_name_manage.phone_fix_elements_4}}</th>  
+                      {% endif %}
+                      {% if stock_name_manage.phone_fix_elements_5 == 'none' %}
+                      <th></th>
+                      {% else %}
+                      <th style="white-space:nowrap;">{{stock_name_manage.phone_fix_elements_5}}</th>  
+                      {% endif %}
+                      {% if stock_name_manage.phone_fix_elements_6 == 'none' %}
+                      <th></th>
+                      {% else %}
+                      <th style="white-space:nowrap;">{{stock_name_manage.phone_fix_elements_6}}</th>  
+                      {% endif %}
+                      {% if stock_name_manage.phone_fix_elements_7 == 'none' %}
+                      <th></th>
+                      {% else %}
+                      <th style="white-space:nowrap;">{{stock_name_manage.phone_fix_elements_7}}</th>  
+                      {% endif %}
+                      {% if stock_name_manage.phone_fix_elements_8 == 'none' %}
+                      <th></th>
+                      {% else %}
+                      <th style="white-space:nowrap;">{{stock_name_manage.phone_fix_elements_8}}</th>  
+                      {% endif %}
+                      {% if stock_name_manage.phone_fix_elements_9 == 'none' %}
+                      <th></th>
+                      {% else %}
+                      <th style="white-space:nowrap;">{{stock_name_manage.phone_fix_elements_9}}</th>  
+                      {% endif %}
+                      {% if stock_name_manage.phone_fix_elements_10 == 'none' %}
+                      <th></th>
+                      {% else %}
+                      <th style="white-space:nowrap;">{{stock_name_manage.phone_fix_elements_10}}</th>  
+                      {% endif %}
+                      {% if stock_name_manage.phone_fix_elements_11 == 'none' %}
+                      <th></th>
+                      {% else %}
+                      <th style="white-space:nowrap;">{{stock_name_manage.phone_fix_elements_11}}</th>  
+                      {% endif %}
+                      {% if stock_name_manage.phone_fix_elements_12 == 'none' %}
+                      <th></th>
+                      {% else %}
+                      <th style="white-space:nowrap;">{{stock_name_manage.phone_fix_elements_12}}</th>  
+                      {% endif %}
+                      {% if stock_name_manage.phone_fix_elements_13 == 'none' %}
+                      <th></th>
+                      {% else %}
+                      <th style="white-space:nowrap;">{{stock_name_manage.phone_fix_elements_13}}</th>  
+                      {% endif %}
+                      {% if stock_name_manage.phone_fix_elements_14 == 'none' %}
+                      <th></th>
+                      {% else %}
+                      <th style="white-space:nowrap;">{{stock_name_manage.phone_fix_elements_14}}</th>  
+                      {% endif %}
+                      {% if stock_name_manage.phone_fix_elements_15 == 'none' %}
+                      <th></th>
+                      {% else %}
+                      <th style="white-space:nowrap;">{{stock_name_manage.phone_fix_elements_15}}</th>  
+                      {% endif %}
+                      {% if stock_name_manage.phone_fix_elements_16 == 'none' %}
+                      <th></th>
+                      {% else %}
+                      <th style="white-space:nowrap;">{{stock_name_manage.phone_fix_elements_16}}</th>  
+                      {% endif %}
+                      {% if stock_name_manage.phone_fix_elements_17 == 'none' %}
+                      <th></th>
+                      {% else %}
+                      <th style="white-space:nowrap;">{{stock_name_manage.phone_fix_elements_17}}</th>  
+                      {% endif %}
+                      {% if stock_name_manage.phone_fix_elements_18 == 'none' %}
+                      <th></th>
+                      {% else %}
+                      <th style="white-space:nowrap;">{{stock_name_manage.phone_fix_elements_18}}</th>  
+                      {% endif %}
+                      {% if stock_name_manage.phone_fix_elements_19 == 'none' %}
+                      <th></th>
+                      {% else %}
+                      <th style="white-space:nowrap;">{{stock_name_manage.phone_fix_elements_19}}</th>  
+                      {% endif %}
+                      {% if stock_name_manage.phone_fix_elements_20 == 'none' %}
+                      <th></th>
+                      {% else %}
+                      <th style="white-space:nowrap;">{{stock_name_manage.phone_fix_elements_20}}</th>
+                      {% endif %}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><a href="/manage/stock_name_manage_order/{{phone_name_num}}">{{phone_name_list|first|add:"/"}}{{phone_name_list|last}}</a></td>
+                      {% if stock_name_manage.phone_fix_elements_1 == 'none' %}
+                      {% else %}
+                      <td>{{stock_name_manage.phone_fix_elements_num_1}}</td>
+                      {% endif %}
+                      {% if stock_name_manage.phone_fix_elements_2 == 'none' %}
+                      {% else %}
+                      <td>{{stock_name_manage.phone_fix_elements_num_2}}</td>
+                      {% endif %}
+                      {% if stock_name_manage.phone_fix_elements_3 == 'none' %}
+                      {% else %}
+                      <td>{{stock_name_manage.phone_fix_elements_num_3}}</td>
+                      {% endif %}
+                      {% if stock_name_manage.phone_fix_elements_4 == 'none' %}
+                      {% else %}
+                      <td>{{stock_name_manage.phone_fix_elements_num_4}}</td>
+                      {% endif %}
+                      {% if stock_name_manage.phone_fix_elements_5 == 'none' %}
+                      {% else %}
+                      <td>{{stock_name_manage.phone_fix_elements_num_5}}</td>
+                      {% endif %}
+                      {% if stock_name_manage.phone_fix_elements_6 == 'none' %}
+                      {% else %}
+                      <td>{{stock_name_manage.phone_fix_elements_num_6}}</td>
+                      {% endif %}
+                      {% if stock_name_manage.phone_fix_elements_7 == 'none' %}
+                      {% else %}
+                      <td>{{stock_name_manage.phone_fix_elements_num_7}}</td>
+                      {% endif %}
+                      {% if stock_name_manage.phone_fix_elements_8 == 'none' %}
+                      {% else %}
+                      <td>{{stock_name_manage.phone_fix_elements_num_8}}</td>
+                      {% endif %}
+                      {% if stock_name_manage.phone_fix_elements_9 == 'none' %}
+                      {% else %}
+                      <td>{{stock_name_manage.phone_fix_elements_num_9}}</td>
+                      {% endif %}
+                      {% if stock_name_manage.phone_fix_elements_10 == 'none' %}
+                      {% else %}
+                      <td>{{stock_name_manage.phone_fix_elements_num_10}}</td>
+                      {% endif %}
+                      {% if stock_name_manage.phone_fix_elements_11 == 'none' %}
+                      {% else %}
+                      <td>{{stock_name_manage.phone_fix_elements_num_11}}</td>
+                      {% endif %}
+                      {% if stock_name_manage.phone_fix_elements_12 == 'none' %}
+                      {% else %}
+                      <td>{{stock_name_manage.phone_fix_elements_num_12}}</td>
+                      {% endif %}
+                      {% if stock_name_manage.phone_fix_elements_13 == 'none' %}
+                      {% else %}
+                      <td>{{stock_name_manage.phone_fix_elements_num_13}}</td>
+                      {% endif %}
+                      {% if stock_name_manage.phone_fix_elements_14 == 'none' %}
+                      {% else %}
+                      <td>{{stock_name_manage.phone_fix_elements_num_14}}</td>
+                      {% endif %}
+                      {% if stock_name_manage.phone_fix_elements_15 == 'none' %}
+                      {% else %}
+                      <td>{{stock_name_manage.phone_fix_elements_num_15}}</td>
+                      {% endif %}
+                      {% if stock_name_manage.phone_fix_elements_16 == 'none' %}
+                      {% else %}
+                      <td>{{stock_name_manage.phone_fix_elements_num_16}}</td>
+                      {% endif %}
+                      {% if stock_name_manage.phone_fix_elements_17 == 'none' %}
+                      {% else %}
+                      <td>{{stock_name_manage.phone_fix_elements_num_17}}</td>
+                      {% endif %}
+                      {% if stock_name_manage.phone_fix_elements_18 == 'none' %}
+                      {% else %}
+                      <td>{{stock_name_manage.phone_fix_elements_num_18}}</td>
+                      {% endif %}
+                      {% if stock_name_manage.phone_fix_elements_19 == 'none' %}
+                      {% else %}
+                      <td>{{stock_name_manage.phone_fix_elements_num_19}}</td>
+                      {% endif %}
+                      {% if stock_name_manage.phone_fix_elements_20 == 'none' %}
+                      {% else %}
+                      <td>{{stock_name_manage.phone_fix_elements_num_20}}</td>         
+                      {% endif %}
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+  <!-- Datatables -->
+  <script src="/static/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+  <script src="/static/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+  <script src="/static/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+  <script src="/static/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+  <script src="/static/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+  <script src="/static/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+  <script src="/static/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+  <script src="/static/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+  <script src="/static/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+  <script src="/static/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+  <script src="/static/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+  <script src="/static/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+  <script src="/static/vendors/jszip/dist/jszip.min.js"></script>
+  <script src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>
+  <script src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>
+{% endblock javascripts %}

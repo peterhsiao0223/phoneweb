@@ -1,0 +1,104 @@
+{% extends "app/base_site.html" %}
+
+{% block title %} Plain Page {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock stylesheets %}
+
+{% block sidebar %}{% endblock sidebar %}
+
+{% block top_navigation %}{% endblock top_navigation %}
+
+{% block content %}
+    <div class="right_col" role="main">
+      <div class="">
+        <div class="page-title">
+          <div class="title_left">
+            <h3>出貨單查詢 <small>{% if stock_phone_ng.alive == True %}<div class="text-danger" style="display:inline;">未出貨</div>{% elif stock_phone_ng.alive == False %}<div class="text-primary" style="display:inline;">已出貨</div>{% endif %}</small></h3>
+          </div>
+
+          <div class="title_right">
+          </div>
+        </div>
+
+        <div class="clearfix"></div>
+
+        <div class="row">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+              <div class="x_title">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                  <br>
+                </div>
+                <ul class="nav navbar-right panel_toolbox">
+                </ul>
+                <div class="clearfix">
+                  <div class="row">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-4">手機型號: </label>
+                      <div class="col-md-9 col-sm-9 col-xs-8">
+                        {{phone_brand_name_text}}/{{phone_name_text}}
+                      </div>
+                  </div>
+                  <div class="row">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-4">數量: </label>
+                      <div class="col-md-9 col-sm-9 col-xs-8">
+                        {{stock_num_text}}
+                      </div>
+                  </div>
+                  
+                  <div class="row">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-4">登錄日期: </label>
+                      <div class="col-md-9 col-sm-9 col-xs-8">
+                        {{stock_phone_ng.create_at|date:"Y/m/d H:i:s"}}
+                      </div>
+                  </div>
+                  <div class="row">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-4">登錄者: </label>
+                      <div class="col-md-9 col-sm-9 col-xs-8">
+                        {{stock_phone_ng.log_user}}
+                      </div>
+                  </div>
+                  <div class="row">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-4">廠商: </label>
+                      <div class="col-md-9 col-sm-9 col-xs-8">
+                        {{stock_phone_ng.stock_fix_manu_num}}
+                      </div>
+                  </div>
+                  <div class="row">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-4">NG說明: </label>
+                      <div class="col-md-9 col-sm-9 col-xs-8">
+                        {{stock_phone_ng.comment}}
+                      </div>
+                  </div>
+                  <div class="row">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-4">最後更新: </label>
+                      <div class="col-md-9 col-sm-9 col-xs-8">
+                        {{stock_phone_ng.update_at|date:"Y/m/d H:i:s"}}
+                      </div>
+                  </div>
+
+                  <div class="row">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-4">出貨說明: </label>
+                      <div class="col-md-9 col-sm-9 col-xs-8">
+                        {{stock_phone_ng.finish_comment}}
+                      </div>
+                  </div>
+                </div>
+              </div>
+              <div class="x_content">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock content %}
+
+{% block footer %}{% endblock footer %}
+
+{% block javascripts %}
+  {{ block.super }}
+{% endblock javascripts %}
+
+

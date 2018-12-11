@@ -1,0 +1,348 @@
+{% extends "app/base_site.html" %}
+
+{% block title %} Table Dynamic {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+  <link href="/static/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+  <link href="/static/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+  <link href="/static/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+  <link href="/static/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+  <link href="/static/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+{% endblock stylesheets %}
+
+{% block content %}
+  <div class="right_col" role="main">
+    <div class="">
+      <div class="page-title">
+        <div class="title_left">
+          <h3>我的維修單 </h3>
+        </div>
+
+        <div class="title_right">
+          <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search for...">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button">Go!</button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="clearfix"></div>
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>我的維修單<small>Users</small></h2>
+              <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Settings 1</a>
+                    </li>
+                    <li><a href="#">Settings 2</a>
+                    </li>
+                  </ul>
+                </li>
+                <li><a class="close-link"><i class="fa fa-close"></i></a>
+                </li>
+              </ul>
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+            <div class="well" style="overflow: auto">
+              <div class="col-md-12">
+                <form class="form-horizontal" action="/manage/costomer_fix_manage/" method="POST">
+                  <fieldset>
+                    <label class="control-label col-md-1 col-sm-1 col-xs-6">日期: </label>
+                    <div class="col-md-4">
+                      <div class="control-group">
+                        <div class="controls">
+                          <div class="input-prepend input-group">
+                            <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
+                            <input type="text" style="width: 200px" name="reservation" id="reservation" class="form-control" value="{{date_text}}" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <label class="control-label col-md-1 col-sm-1 col-xs-6">手機: </label>
+                    <div class="col-md-2 col-sm-2 col-xs-6">
+                      <select class="form-control" name="phone_brand_choice">
+                          <option value="none">全部</option>
+                        {% for phone_brand_list in phone_brand_lists %}
+                          <option value="{{phone_brand_list.phone_brand_num}}" {% if phone_brand_list.phone_brand_num == phone_brand_choice %} selected {% endif %} >{{phone_brand_list.phone_brand_name}}</option>
+                        {% endfor %}
+                      </select>
+                    </div>  
+<!--                     <div class="col-md-2 col-sm-2 col-xs-6">
+                      <select class="form-control" name="date_month">
+                          <option value="none">請選擇</option>
+                          {% for date_month_list,date_month_text_list in date_month_text_zip %}
+                          <option value="{{date_month_list}}" {% if date_month_list == date_month %} selected {% endif %}>{{date_month_text_list}}</option>
+                          {% endfor %}
+                      </select>
+                    </div> -->
+                    <div class="col-md-3 col-sm-3 col-xs-6">
+                      <input type="radio" class="flat" name="status" id="status" value="YES" checked="" />已完工
+                      <input type="radio" class="flat" name="status" id="status" value="NO" />未完工
+                      <input type="radio" class="flat" name="status" id="status" value="ALL"  required /> 全部
+                    </div>
+                      <div class="col-md-1 col-sm-1 col-xs-6">
+                        <button type="submit" class="btn btn-success">送出</button>{% csrf_token %}
+                      </div>
+                  </fieldset>
+                </form>
+              </div>
+            </div>
+            <div class="row">
+              <div class="ol-md-12 col-sm-12 col-xs-12">
+                {% if search_type_text %} <p>查詢條件: {{search_type_text}}: {{customer_info}} </p>
+                {% else %}<p>日期 {{start_date|date:"m/d/Y"}} ~ {{end_date|date:"m/d/Y"}} 手機廠牌 : {{phone_brand_choice_text}} 完工狀況 : {{status_text}} </p>
+                {% endif %}
+              </div>  
+            </div>
+
+            <div class="table-responsive">
+              <table class="table table-striped jambo_table bulk_action">
+                <thead>
+                  <tr>
+                    <th>選項</th>
+                    <th>姓名/性別</th>
+                    <th>手機</th>
+                    <th>維修手機/型號/顏色</th>
+                    <th>維修問題</th>
+                    <th>訂金/維修價格</th>
+                    <th>收單人員</th>
+                    <th>分店</th>
+                    <th>接單時間</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for costomer_manage_list,fix_part_list_text in costomer_manage_lists_zip %}
+                  <tr>
+                    <td>
+
+                      <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          功能
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          <a class="dropdown-item" href="/manage/engineer_fix_info/{{costomer_manage_list.costomer_sn}}"><p> 完工key單</p></a>
+                          <!-- <br> -->
+                          <a type="button" class="btn btn-link btn-xs dropdown-item" data-toggle="modal" data-target="#Modal{{costomer_manage_list.costomer_sn}}"><p> 外包轉單</p></a>
+                        </div>
+                      </div>
+                     <!--  <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          功能
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          <a href="/manage/engineer_fix_info/{{costomer_manage_list.costomer_sn}}">完工key單</a>
+                          <br>
+                          <button type="button" class="btn btn-link btn-xs" data-toggle="modal" data-target="#Modal{{costomer_manage_list.costomer_sn}}"><p>外包轉單</p>
+
+                        </div>
+                      </div> -->
+                    </td>
+                    <td><a href="/customer_form_info/{{costomer_manage_list.costomer_sn}}">{{costomer_manage_list.customer_name}}({% if costomer_manage_list.gender == True %}男{% elif costomer_manage_list.gender == False %}女{% endif %})</a></td>
+                    <td>{{costomer_manage_list.customer_phone_num}}</td>
+                    <td>{{costomer_manage_list.phone_brand_num}}/{{costomer_manage_list.phone_name_num}}/{{costomer_manage_list.phone_color}}</td>
+                    <td>{% for fix_part in fix_part_list_text %}{{fix_part}},{% endfor %}</td>
+                    <td>{{costomer_manage_list.deposit}}/{{costomer_manage_list.total_price}}</td>
+                    <td>{{costomer_manage_list.sells}}</td>
+                    <td>{{costomer_manage_list.story}}</td>
+                    <td>{{costomer_manage_list.update_at|date:"Y/m/d H:i:s"}}</td>
+                    
+                  </tr>
+                  <!-- <tr>
+                    <td colspan="10">
+                      <div class="progress">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">60%
+                        </div>
+                      </div>
+                    </td>
+                  </tr> -->
+                  {% endfor %}
+
+                  {% for costomer_manage_list,fix_part_list_text,costomer_manage_pass_info in costomer_manage_pass_lists_zip %}
+                  <tr>
+                    <td>
+                      <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          功能
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          <button type="button" class="btn btn-link btn-xs" data-toggle="modal" data-target="#Modal{{costomer_manage_list.costomer_sn}}"><p class="text-danger">轉單{{costomer_manage_pass_info.engineer_2}}</p>
+                        </div>
+                      </div>
+                    </td>
+                    <td><a href="/customer_form_info/{{costomer_manage_list.costomer_sn}}">{{costomer_manage_list.customer_name}}({% if costomer_manage_list.gender == True %}男{% elif costomer_manage_list.gender == False %}女{% endif %})</a></td>
+                    <td>{{costomer_manage_list.customer_phone_num}}</td>
+                    <td>{{costomer_manage_list.phone_brand_num}}/{{costomer_manage_list.phone_name_num}}/{{costomer_manage_list.phone_color}}</td>
+                    <td>{% for fix_part in fix_part_list_text %}{{fix_part}},{% endfor %}</td>
+                    <td>{{costomer_manage_list.deposit}}/{{costomer_manage_list.total_price}}</td>
+                    <td>{{costomer_manage_list.sells}}</td>
+                    <td>{{costomer_manage_list.story}}</td>
+                    <td>{{costomer_manage_list.update_at|date:"Y/m/d H:i:s"}}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+{% for costomer_manage_lists,engineer_none_lists,engineer_none_lists_1,engineer_none_lists_2,fix_part_list_text in engineer_none_lists_file_zip %}
+  <div id="Modal{{engineer_none_lists_1}}" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">維修單號:{{engineer_none_list.costomer_sn}}</h4>
+        </div>
+        <div class="modal-body">
+          <form class="form-horizontal" action="/post/costomer_fix_manage/" method="POST">
+              <input type="text" name="engineer_sn" value="{{engineer_none_lists_2}}" hidden>
+
+              <div class="col-md-3 col-sm-3 col-xs-3"><p class="lead">維修手機 : </p></div>
+                <div class="col-md-9 col-sm-3 col-xs-9">
+                  <p class="lead">{{costomer_manage_lists.phone_brand_num}}/{{costomer_manage_lists.phone_name_num}}/{{costomer_manage_lists.phone_color}}
+                  </p>
+                </div>
+              <div class="col-md-12 col-sm-12 col-xs-12">
+              </div>
+              <div class="col-md-3 col-sm-3 col-xs-3"><p class="lead">轉單工程師 : </p></div>
+                <div class="col-md-3 col-sm-3 col-xs-3">
+                  <select class="form-control" name="engineer_choice">
+                    <option value="none">無</option>
+                    {% if engineer_none_lists.story == 'story_1' %}
+                      {% for engineer in engineer_list_1 %}
+                        <option value="{{engineer.engineer_num}}">{{engineer.engineer_name}}</option>
+                      {% endfor %}
+                    {% elif engineer_none_lists.story == 'story_2' %}
+                      {% for engineer in engineer_list_2 %}
+                        <option value="{{engineer.engineer_num}}">{{engineer.engineer_name}}</option>
+                      {% endfor %}
+                    {% endif %}
+                  </select>
+                </div>
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-3"><p class="lead">維修項目 : </p></div>
+                <div class="col-md-9 col-sm-9 col-xs-9">
+                  {% for fix_part in fix_part_list_text %}
+                  <!-- <div class="col-md-3 col-sm-3 col-xs-6"> -->
+                    <input type="checkbox" class="flat" id="fix_part" name="fix_part" value="{{fix_part}}"> {{fix_part}}
+                  <!-- </div> -->
+                  {% endfor %}
+                </div>
+              <div class="col-md-12 col-sm-12 col-xs-12">
+              </div>
+              <div class="col-md-3 col-sm-3 col-xs-3"><p class="lead">利潤分配 : </p></div>
+                <div class="col-md-3 col-sm-3 col-xs-3">
+                  <select class="form-control" name="percent_choice">
+                    {% for percent in percents %}
+                      <option value="{{percent}}">{{percent}}%</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">送出</button>{% csrf_token %}
+          <!-- <button type="button" class="btn btn-default" data-dismiss="modal">否</button> -->
+        </div>
+          </form>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+
+{% for costomer_manage_pass,fix_part_list_pass_text,costomer_manage_pass_info in costomer_manage_pass_lists_2_zip %}
+  <div id="Modal{{costomer_manage_pass.costomer_sn}}" class="modal fade" role="dialog" data-keyboard="false">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">維修單號:{{costomer_manage_pass_info.costomer_sn}}</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-3 col-sm-3 col-xs-3"><p class="lead">維修手機 : </p></div>
+              <div class="col-md-9 col-sm-3 col-xs-9">
+                <p class="lead">{{costomer_manage_pass.phone_brand_num}}/{{costomer_manage_pass.phone_name_num}}/{{costomer_manage_pass.phone_color}}
+                </p>
+              </div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-3"><p class="lead">維修項目 : </p></div>
+              <div class="col-md-9 col-sm-3 col-xs-9">
+                <p class="lead">{{costomer_manage_pass.fix_part|cut:"["|cut:"]"|cut:"'"}}
+                </p>
+              </div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-3"><p class="lead">轉單工程師 : </p></div>
+              <div class="col-md-3 col-sm-3 col-xs-3">
+                <p class="lead">{{costomer_manage_pass_info.engineer_2}}</p>
+              </div>
+              <div class="col-md-12 col-sm-12 col-xs-12">
+              </div>
+              <div class="col-md-3 col-sm-3 col-xs-3"><p class="lead">外包項目 : </p></div>
+              <div class="col-md-9 col-sm-9 col-xs-9">
+                  <p class="lead">{{costomer_manage_pass_info.engineer_fix_2|cut:"["|cut:"]"|cut:"'"}}</p>
+              </div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-3"><p class="lead">利潤分配 : </p></div>
+              <div class="col-md-3 col-sm-3 col-xs-3">
+                <p class="lead">{{costomer_manage_pass_info.case_percent_1}}/{{costomer_manage_pass_info.case_percent_2}}</p>
+              </div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+            </div>
+          </div>
+      </div>
+        <div class="modal-footer">
+          <!-- <button type="submit" class="btn btn-success"></button>{% csrf_token %} -->
+          <button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+  
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+  <!-- Datatables -->
+  <script src="/static/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+  <script src="/static/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+  <script src="/static/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+  <script src="/static/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+  <script src="/static/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+  <script src="/static/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+  <script src="/static/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+  <script src="/static/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+  <script src="/static/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+  <script src="/static/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+  <script src="/static/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+  <script src="/static/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+  <script src="/static/vendors/jszip/dist/jszip.min.js"></script>
+  <script src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>
+  <script src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>
+{% endblock javascripts %}

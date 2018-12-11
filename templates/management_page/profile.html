@@ -1,0 +1,206 @@
+{% extends "app/base_site.html" %}
+
+{% block title %} Plain Page {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock stylesheets %}
+
+{% block content %}
+    <div class="right_col" role="main">
+      <div class="">
+        <div class="page-title">
+          <div class="title_left">
+            <h3>個人資料</h3>
+          </div>
+
+          <div class="title_right">
+            <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search for...">
+                <span class="input-group-btn">
+                  <button class="btn btn-default" type="button">Go!</button>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="clearfix"></div>
+
+        <div class="row">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+              <div class="x_title">
+                <h2>個人資料</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                  <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                  </li>
+                  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                    <ul class="dropdown-menu" role="menu">
+                      <li><a href="#">Settings 1</a>
+                      </li>
+                      <li><a href="#">Settings 2</a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li><a class="close-link"><i class="fa fa-close"></i></a>
+                  </li>
+                </ul>
+                <div class="clearfix"></div>
+              </div>
+              <div class="x_content">
+                  {% if page_type == 'profile' %}
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="white-box">
+                                <div class="overlay-box">
+                                    <div class="user-content">
+                                        <a href="javascript:void(0)"><img src="/static/images/user.png" class="thumb-lg img-circle" alt="img"></a>
+                                    </div>
+                                </div>
+                            <div class="user-btm-box">
+                                <div class="col-md-12 col-sm-12 text-center">
+                                    <p class="text-purple"><i class="ti-facebook"></i></p>
+                                    <h1>{{ user.first_name }}</h1> </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8 col-xs-12">
+                        <div class="white-box">
+                                {% if new_password %}   
+                                <div class="container main-container">
+                                    <div class="col-md-4">
+                                        <div class="alert alert-warning" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            <strong>錯誤</strong> {{alert_text}}
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            <form class="form-horizontal form-material" method="POST" action="/manage/pw_rest/">
+                                <div class="form-group">
+                                    <label class="col-md-12">登入帳號</label>
+                                    <div class="col-md-6">
+                                        <input type="text"class="form-control form-control-line" value="{{user.username}}" disabled> </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-12">密碼修改</label>
+                                    <div class="col-md-6">
+                                        <input type="password" name="new_password" class="form-control form-control-line"> </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-12">密碼請再輸入一次</label>
+                                    <div class="col-md-6">
+                                        <input type="password" name="new_password_check" class="form-control form-control-line"> </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <button class="btn btn-success">送出修改</button>{% csrf_token %}
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% elif page_type == 'add' %}
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="white-box">
+                                <div class="overlay-box">
+                                    <div class="user-content">
+                                        <a href="javascript:void(0)"><img src="/static/images/user.png" class="thumb-lg img-circle" alt="img"></a>
+                                    </div>
+                                </div>
+                            <div class="user-btm-box">
+                                <div class="col-md-12 col-sm-12 text-center">
+                                    <p class="text-purple"><i class="ti-facebook"></i></p>
+                                    <h1>{{ user.first_name }}</h1> </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8 col-xs-12">
+                        <div class="white-box">
+                                {% if new_password %}   
+                                <div class="container main-container">
+                                    <div class="col-md-4">
+                                        <div class="alert alert-warning" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            <strong>錯誤</strong> {{alert_text}}
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            <form class="form-horizontal form-material" method="POST" action="/manage/user_add/post">
+                                <div class="form-group">
+                                    <label class="col-md-12">使用者名稱</label>
+                                    <div class="col-md-12">
+                                        <input type="text" class="form-control form-control-line" name="username"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-12">姓名</label>
+                                    <div class="col-md-12">
+                                        <input type="text" class="form-control form-control-line" name="name"></div>
+                                </div>                                
+                                <div class="form-group">
+                                    <label class="col-md-12">暱稱</label>
+                                    <div class="col-md-12">
+                                        <input type="text" class="form-control form-control-line" name="nickname"></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-12">密碼<br/><small>預設 000000</small>
+                                    </label>
+                                    <div class="col-md-12">
+                                        <input type="password" placeholder="000000" name="password" class="form-control form-control-line" value="000000"> </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-12">身份</label>
+                                        <div class="col-md-6">
+                                            <select class="form-control" name="group_mod">
+                                            <option value="engineer">工程師</option>
+                                            <option value="staff">員工</option>
+<!--                                             <option value="tch_user_2">2店工程師</option>
+                                            <option value="tch_admin_2">2店員工</option>
+ -->                                        </select>
+                                        </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-12">分店</label>
+                                        <div class="col-md-6">
+                                            <select class="form-control" name="story">
+                                                {% for user_story in user_story_lists %}
+                                                    <option value="{{user_story.story_num}}">{{user_story.story}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <button class="btn btn-success">送出新增</button>{% csrf_token %}
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+{% endblock javascripts %}
+

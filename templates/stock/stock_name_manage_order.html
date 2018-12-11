@@ -1,0 +1,322 @@
+{% extends "app/base_site.html" %}
+
+{% block title %} Table Dynamic {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+  <link href="/static/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+  <link href="/static/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+  <link href="/static/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+  <link href="/static/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+  <link href="/static/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+{% endblock stylesheets %}
+
+{% block content %}
+  <div class="right_col" role="main">
+    <div class="">
+      <div class="page-title">
+        <div class="title_left">
+          <h3>Users <small>Some examples to get you started</small></h3>
+        </div>
+
+        <div class="title_right">
+          <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search for...">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button">Go!</button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="clearfix"></div>
+
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              {% if page_edit == 'True' %}
+              <div class="col-md-6 col-sm-6 col-xs-12"><h2>{{phone_name|first}} <small>{{phone_name|last}}</small></h2></div>
+              <div class="col-md-4 col-sm-4 col-xs-12 text-right">最後更新日期 : {{stock_name_manage.update_at|date:"Y/m/d H:i:s"}}</div>
+              {% else %}
+              <h2>Default Example <small>Users</small></h2>
+              {% endif %}
+              <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Settings 1</a>
+                    </li>
+                    <li><a href="#">Settings 2</a>
+                    </li>
+                  </ul>
+                </li>
+                <li><a class="close-link"><i class="fa fa-close"></i></a>
+                </li>
+              </ul>
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+              <p class="text-muted font-13 m-b-30">
+                DataTables has most features enabled by default, so all you need to do to use it with your own tables is to call the construction function: <code>$().DataTable();</code>
+              </p>
+                    <form id="demo-form2" class="form-horizontal form-label-left" action="/post/manage/stock_name_manage_order/{{stock_name_manage.phone_name_num}}" method="POST">
+                      <table class="table table-bordered">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            {% for title_list in title_lists %}
+                              <th>{{title_list}}</th>
+                            {% endfor %}
+                          </tr>
+                        <tbody>
+                          <tr>
+                            <td>原順序</td>
+                            {% for count_list in count_lists %}
+                            <td>{{count_list}}</td>
+                            {% endfor %}
+                          </tr>
+                          <tr>
+                            <td>修改後順序</td>
+                            {% for title_list in title_lists %}
+                            <td><div id="result{{title_list}}"></div></td>
+                            {% endfor %}
+                          </tr>                          
+                        </tbody>
+                      </table>
+                    <div class="form-group">
+                      {% for title_list,count_list in phone_fix_elements_zip %}
+                      <div class="col-md-3 col-sm-3 col-sx-6">
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                          <p>{{title_list}}</p>
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-xs-6">
+                          <select class="form-control" name="select_order" id="number{{title_list}}" onchange="print_value{{title_list}}();">
+                            <option value="none">請選擇</option>
+                            {% if stock_name_manage.phone_fix_elements_1 == 'none' %}{% else %}<option value="{{stock_name_manage.phone_fix_elements_1}}">{{stock_name_manage.phone_fix_elements_1}}</option>{% endif %}
+                            {% if stock_name_manage.phone_fix_elements_2 == 'none' %}{% else %}<option value="{{stock_name_manage.phone_fix_elements_2}}">{{stock_name_manage.phone_fix_elements_2}}</option>{% endif %}
+                            {% if stock_name_manage.phone_fix_elements_3 == 'none' %}{% else %}<option value="{{stock_name_manage.phone_fix_elements_3}}">{{stock_name_manage.phone_fix_elements_3}}</option>{% endif %}
+                            {% if stock_name_manage.phone_fix_elements_4 == 'none' %}{% else %}<option value="{{stock_name_manage.phone_fix_elements_4}}">{{stock_name_manage.phone_fix_elements_4}}</option>{% endif %}
+                            {% if stock_name_manage.phone_fix_elements_5 == 'none' %}{% else %}<option value="{{stock_name_manage.phone_fix_elements_5}}">{{stock_name_manage.phone_fix_elements_5}}</option>{% endif %}
+                            {% if stock_name_manage.phone_fix_elements_6 == 'none' %}{% else %}<option value="{{stock_name_manage.phone_fix_elements_6}}">{{stock_name_manage.phone_fix_elements_6}}</option>{% endif %}
+                            {% if stock_name_manage.phone_fix_elements_7 == 'none' %}{% else %}<option value="{{stock_name_manage.phone_fix_elements_7}}">{{stock_name_manage.phone_fix_elements_7}}</option>{% endif %}
+                            {% if stock_name_manage.phone_fix_elements_8 == 'none' %}{% else %}<option value="{{stock_name_manage.phone_fix_elements_8}}">{{stock_name_manage.phone_fix_elements_8}}</option>{% endif %}
+                            {% if stock_name_manage.phone_fix_elements_9 == 'none' %}{% else %}<option value="{{stock_name_manage.phone_fix_elements_9}}">{{stock_name_manage.phone_fix_elements_9}}</option>{% endif %}
+                            {% if stock_name_manage.phone_fix_elements_10 == 'none' %}{% else %}<option value="{{stock_name_manage.phone_fix_elements_10}}">{{stock_name_manage.phone_fix_elements_10}}</option>{% endif %}
+                            {% if stock_name_manage.phone_fix_elements_11 == 'none' %}{% else %}<option value="{{stock_name_manage.phone_fix_elements_11}}">{{stock_name_manage.phone_fix_elements_11}}</option>{% endif %}
+                            {% if stock_name_manage.phone_fix_elements_12 == 'none' %}{% else %}<option value="{{stock_name_manage.phone_fix_elements_12}}">{{stock_name_manage.phone_fix_elements_12}}</option>{% endif %}
+                            {% if stock_name_manage.phone_fix_elements_13 == 'none' %}{% else %}<option value="{{stock_name_manage.phone_fix_elements_13}}">{{stock_name_manage.phone_fix_elements_13}}</option>{% endif %}
+                            {% if stock_name_manage.phone_fix_elements_14 == 'none' %}{% else %}<option value="{{stock_name_manage.phone_fix_elements_14}}">{{stock_name_manage.phone_fix_elements_14}}</option>{% endif %}
+                            {% if stock_name_manage.phone_fix_elements_15 == 'none' %}{% else %}<option value="{{stock_name_manage.phone_fix_elements_15}}">{{stock_name_manage.phone_fix_elements_15}}</option>{% endif %}
+                            {% if stock_name_manage.phone_fix_elements_16 == 'none' %}{% else %}<option value="{{stock_name_manage.phone_fix_elements_16}}">{{stock_name_manage.phone_fix_elements_16}}</option>{% endif %}
+                            {% if stock_name_manage.phone_fix_elements_17 == 'none' %}{% else %}<option value="{{stock_name_manage.phone_fix_elements_17}}">{{stock_name_manage.phone_fix_elements_17}}</option>{% endif %}
+                            {% if stock_name_manage.phone_fix_elements_18 == 'none' %}{% else %}<option value="{{stock_name_manage.phone_fix_elements_18}}">{{stock_name_manage.phone_fix_elements_18}}</option>{% endif %}
+                            {% if stock_name_manage.phone_fix_elements_19 == 'none' %}{% else %}<option value="{{stock_name_manage.phone_fix_elements_19}}">{{stock_name_manage.phone_fix_elements_19}}</option>{% endif %}
+                            {% if stock_name_manage.phone_fix_elements_20 == 'none' %}{% else %}<option value="{{stock_name_manage.phone_fix_elements_20}}">{{stock_name_manage.phone_fix_elements_20}}</option>{% endif %}
+                          </select>
+                        </div>
+                      </div>
+                      {% endfor %}
+<!--                       <div class="col-md-3 col-sm-3 col-sx-6">
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                          <p>2</p>
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-xs-6">
+                          <input type="text" name="stock_name_edit" class="form-control" value="{% if stock_name_manage.phone_fix_elements_2 == 'none' %}{% else %}{{stock_name_manage.phone_fix_elements_2}}{% endif %}" >
+                        </div>
+                      </div>                    
+                      <div class="col-md-3 col-sm-3 col-sx-6">
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                          <p>3</p>
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-xs-6">
+                          <input type="text" name="stock_name_edit" class="form-control" value="{% if stock_name_manage.phone_fix_elements_3 == 'none' %}{% else %}{{stock_name_manage.phone_fix_elements_3}}{% endif %}" >
+                        </div>
+                      </div>   
+                      <div class="col-md-3 col-sm-3 col-sx-6">
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                          <p>4</p>
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-xs-6">
+                          <input type="text" name="stock_name_edit" class="form-control" value="{% if stock_name_manage.phone_fix_elements_4 == 'none' %}{% else %}{{stock_name_manage.phone_fix_elements_4}}{% endif %}" >
+                        </div>
+                      </div>
+                      <div class="col-md-3 col-sm-3 col-sx-6">
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                          <p>5</p>
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-xs-6">
+                          <input type="text" name="stock_name_edit" class="form-control" value="{% if stock_name_manage.phone_fix_elements_5 == 'none' %}{% else %}{{stock_name_manage.phone_fix_elements_5}}{% endif %}" >
+                        </div>
+                      </div>
+                      <div class="col-md-3 col-sm-3 col-sx-6">
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                          <p>6</p>
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-xs-6">
+                          <input type="text" name="stock_name_edit" class="form-control" value="{% if stock_name_manage.phone_fix_elements_6 == 'none' %}{% else %}{{stock_name_manage.phone_fix_elements_6}}{% endif %}" >
+                        </div>
+                      </div>                    
+                      <div class="col-md-3 col-sm-3 col-sx-6">
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                          <p>7</p>
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-xs-6">
+                          <input type="text" name="stock_name_edit" class="form-control" value="{% if stock_name_manage.phone_fix_elements_7 == 'none' %}{% else %}{{stock_name_manage.phone_fix_elements_7}}{% endif %}" >
+                        </div>
+                      </div>   
+                      <div class="col-md-3 col-sm-3 col-sx-6">
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                          <p>8</p>
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-xs-6">
+                          <input type="text" name="stock_name_edit" class="form-control" value="{% if stock_name_manage.phone_fix_elements_8 == 'none' %}{% else %}{{stock_name_manage.phone_fix_elements_8}}{% endif %}" >
+                        </div>
+                      </div>    
+                      <div class="col-md-3 col-sm-3 col-sx-6">
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                          <p>9</p>
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-xs-6">
+                          <input type="text" name="stock_name_edit" class="form-control" value="{% if stock_name_manage.phone_fix_elements_9 == 'none' %}{% else %}{{stock_name_manage.phone_fix_elements_9}}{% endif %}" >
+                        </div>
+                      </div>
+                      <div class="col-md-3 col-sm-3 col-sx-6">
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                          <p>10</p>
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-xs-6">
+                          <input type="text" name="stock_name_edit" class="form-control" value="{% if stock_name_manage.phone_fix_elements_10 == 'none' %}{% else %}{{stock_name_manage.phone_fix_elements_10}}{% endif %}" >
+                        </div>
+                      </div>                    
+                      <div class="col-md-3 col-sm-3 col-sx-6">
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                          <p>11</p>
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-xs-6">
+                          <input type="text" name="stock_name_edit" class="form-control" value="{% if stock_name_manage.phone_fix_elements_11 == 'none' %}{% else %}{{stock_name_manage.phone_fix_elements_11}}{% endif %}" >
+                        </div>
+                      </div>   
+                      <div class="col-md-3 col-sm-3 col-sx-6">
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                          <p>12</p>
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-xs-6">
+                          <input type="text" name="stock_name_edit" class="form-control" value="{% if stock_name_manage.phone_fix_elements_12 == 'none' %}{% else %}{{stock_name_manage.phone_fix_elements_12}}{% endif %}" >
+                        </div>
+                      </div>    
+                      <div class="col-md-3 col-sm-3 col-sx-6">
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                          <p>13</p>
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-xs-6">
+                          <input type="text" name="stock_name_edit" class="form-control" value="{% if stock_name_manage.phone_fix_elements_13 == 'none' %}{% else %}{{stock_name_manage.phone_fix_elements_13}}{% endif %}" >
+                        </div>
+                      </div>
+                      <div class="col-md-3 col-sm-3 col-sx-6">
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                          <p>14</p>
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-xs-6">
+                          <input type="text" name="stock_name_edit" class="form-control" value="{% if stock_name_manage.phone_fix_elements_14 == 'none' %}{% else %}{{stock_name_manage.phone_fix_elements_14}}{% endif %}" >
+                        </div>
+                      </div>                    
+                      <div class="col-md-3 col-sm-3 col-sx-6">
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                          <p>15</p>
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-xs-6">
+                          <input type="text" name="stock_name_edit" class="form-control" value="{% if stock_name_manage.phone_fix_elements_15 == 'none' %}{% else %}{{stock_name_manage.phone_fix_elements_15}}{% endif %}" >
+                        </div>
+                      </div>   
+                      <div class="col-md-3 col-sm-3 col-sx-6">
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                          <p>16</p>
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-xs-6">
+                          <input type="text" name="stock_name_edit" class="form-control" value="{% if stock_name_manage.phone_fix_elements_16 == 'none' %}{% else %}{{stock_name_manage.phone_fix_elements_16}}{% endif %}" >
+                        </div>
+                      </div>      
+                      <div class="col-md-3 col-sm-3 col-sx-6">
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                          <p>17</p>
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-xs-6">
+                          <input type="text" name="stock_name_edit" class="form-control" value="{% if stock_name_manage.phone_fix_elements_17 == 'none' %}{% else %}{{stock_name_manage.phone_fix_elements_17}}{% endif %}" >
+                        </div>
+                      </div>
+                      <div class="col-md-3 col-sm-3 col-sx-6">
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                          <p>18</p>
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-xs-6">
+                          <input type="text" name="stock_name_edit" class="form-control" value="{% if stock_name_manage.phone_fix_elements_18 == 'none' %}{% else %}{{stock_name_manage.phone_fix_elements_18}}{% endif %}" >
+                        </div>
+                      </div>  
+                      <div class="col-md-3 col-sm-3 col-sx-6">
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                          <p>19</p>
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-xs-6">
+                          <input type="text" name="stock_name_edit" class="form-control" value="{% if stock_name_manage.phone_fix_elements_19 == 'none' %}{% else %}{{stock_name_manage.phone_fix_elements_19}}{% endif %}" >
+                        </div>
+                      </div>  
+                      <div class="col-md-3 col-sm-3 col-sx-6">
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                          <p>20</p>
+                        </div>
+                        <div class="col-md-8 col-sm-8 col-xs-6">
+                          <input type="text" name="stock_name_edit" class="form-control" value="{% if stock_name_manage.phone_fix_elements_20 == 'none' %}{% else %}{{stock_name_manage.phone_fix_elements_20}}{% endif %}" >
+                        </div>
+                      </div>
+                    </div> -->
+                    <div class="col-md-12 col-sm-12 col-sx-12">
+                      <hr/>
+                    </div>
+                    <div class="col-md-offset-10 col-md-2 col-sm-offset-10 col-sm-2 col-sx-6">     
+                        <button type="submit" class="btn btn-success">更新 </button>{% csrf_token %}
+                    </div>
+                    </form>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+  <!-- Datatables -->
+  <script src="/static/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+  <script src="/static/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+  <script src="/static/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+  <script src="/static/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+  <script src="/static/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+  <script src="/static/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+  <script src="/static/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+  <script src="/static/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+  <script src="/static/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+  <script src="/static/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+  <script src="/static/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+  <script src="/static/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+  <script src="/static/vendors/jszip/dist/jszip.min.js"></script>
+  <script src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>
+  <script src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>
+  <script>
+  {% for title_list in title_lists %}
+    function print_value{{title_list}}() {
+    document.getElementById("result{{title_list}}").innerHTML = document.getElementById("number{{title_list}}").value
+      }
+  {% endfor %}
+  </script>
+{% endblock javascripts %}

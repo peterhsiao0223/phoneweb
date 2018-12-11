@@ -1,0 +1,67 @@
+{% extends "app/base_site.html" %}
+
+{% block title %} Plain Page {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock stylesheets %}
+
+{% block content %}
+    <div class="right_col" role="main">
+      <div class="">
+        <div class="page-title">
+          <div class="title_left">
+            <h3>Error Page</h3>
+          </div>
+        </div>
+
+        <div class="clearfix"></div>
+
+        <div class="row">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+              <div class="x_title">
+                <h2>Error Page</h2>
+                <div class="clearfix"></div>
+              </div>
+              <div class="x_content">
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="container">
+        <div class="modal fade" id="chkModal" tabindex="-1" role="dialog" aria-labelledby="chkModalLabel">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title" id="chkModalLabel">錯誤</h4>
+              </div>
+            <div class="modal-body">
+              {{ alert_text }}
+            </div>
+            <div class="modal-footer">
+              <input type ="button" class="btn btn-default" role="button" onclick="history.back()" value="回上一頁">
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+  <script type="text/javascript">
+   $('#chkModal').modal('show');
+   setTimeout(function(){
+    history.back();
+  }, 3000);
+   
+</script>
+{% endblock javascripts %}
+

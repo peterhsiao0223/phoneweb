@@ -1,0 +1,531 @@
+{% extends "app/base_site.html" %}
+
+{% block title %} Table Dynamic {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+  <link href="/static/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+  <link href="/static/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+  <link href="/static/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+  <link href="/static/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+  <link href="/static/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+{% endblock stylesheets %}
+
+{% block content %}
+  <div class="right_col" role="main">
+    <div class="">
+      <div class="page-title">
+        <div class="title_left">
+          <h3>料件單價管理</h3>
+        </div>
+
+        <div class="title_right">
+          <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search for...">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button">Go!</button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="clearfix"></div>
+
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              {% if page_edit == 'True' %}
+              <div class="col-md-6 col-sm-6 col-xs-12"><h2>{{phone_name|first}} <small>{{phone_name|last}}</small></h2></div>
+              <div class="col-md-4 col-sm-4 col-xs-12 text-right">最後更新日期 : {{stock_name_manage.update_at|date:"Y/m/d H:i:s"}}</div>
+              {% else %}
+              <h2>料件單價管理</h2>
+              {% endif %}
+              <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Settings 1</a>
+                    </li>
+                    <li><a href="#">Settings 2</a>
+                    </li>
+                  </ul>
+                </li>
+                <li><a class="close-link"><i class="fa fa-close"></i></a>
+                </li>
+              </ul>
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                  {% if page_edit == 'True' %}
+                    <form id="demo-form2" class="form-horizontal form-label-left" action="/post/manage/stock_price_manage_edit/{{stock_name_manage.phone_name_num}}" method="POST">
+                    <div class="form-group">
+                      {% if stock_price_manage.phone_fix_elements_1 == 'none' %}
+                      {% else %}
+                      <div class="col-md-3 col-sm-3 col-sx-6">
+                        <div class="col-md-8 col-sm-8 col-xs-6">
+                          <p>1 {% if stock_name_manage.phone_fix_elements_1 == 'none' %}{% else %}{{stock_name_manage.phone_fix_elements_1}} [{{stock_name_manage.phone_fix_elements_num_1}}] / {{stock_price_manage.phone_fix_elements_price_1}}{% endif %}</p>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                          <input type="text" name="stock_name" hidden value="{{stock_price_manage.phone_fix_elements_1}}">
+                          <input type="text" name="stock_price" class="form-control" value="{{stock_price_manage.phone_fix_elements_price_1}}">
+                        </div>
+                      </div>
+                      {% endif %}
+                      {% if stock_price_manage.phone_fix_elements_2 == 'none' %}
+                      {% else %}
+                      <div class="col-md-3 col-sm-3 col-sx-6">
+                        <div class="col-md-8 col-sm-8 col-xs-6">
+                          <p>2 {% if stock_name_manage.phone_fix_elements_2 == 'none' %}{% else %}{{stock_name_manage.phone_fix_elements_2}} [{{stock_name_manage.phone_fix_elements_num_2}}] / {{stock_price_manage.phone_fix_elements_price_2}}{% endif %}</p>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                          <input type="text" name="stock_name" hidden value="{{stock_price_manage.phone_fix_elements_2}}">
+                          <input type="text" name="stock_price" class="form-control" value="{{stock_price_manage.phone_fix_elements_price_2}}">
+                        </div>
+                      </div>
+                      {% endif %}
+                      {% if stock_price_manage.phone_fix_elements_3 == 'none' %}
+                      {% else %}
+                      <div class="col-md-3 col-sm-3 col-sx-6">
+                        <div class="col-md-8 col-sm-8 col-xs-6">
+                          <p>3 {% if stock_name_manage.phone_fix_elements_3 == 'none' %}{% else %}{{stock_name_manage.phone_fix_elements_3}} [{{stock_name_manage.phone_fix_elements_num_3}}] / {{stock_price_manage.phone_fix_elements_price_3}}{% endif %}</p>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                          <input type="text" name="stock_name" hidden value="{{stock_price_manage.phone_fix_elements_3}}">
+                          <input type="text" name="stock_price" class="form-control" value="{{stock_price_manage.phone_fix_elements_price_3}}">
+                        </div>
+                      </div>
+                      {% endif %}
+                      {% if stock_price_manage.phone_fix_elements_4 == 'none' %}
+                      {% else %}
+                      <div class="col-md-3 col-sm-3 col-sx-6">
+                        <div class="col-md-8 col-sm-8 col-xs-6">
+                          <p>4 {% if stock_name_manage.phone_fix_elements_4 == 'none' %}{% else %}{{stock_name_manage.phone_fix_elements_4}} [{{stock_name_manage.phone_fix_elements_num_4}}] / {{stock_price_manage.phone_fix_elements_price_4}}{% endif %}</p>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                          <input type="text" name="stock_name" hidden value="{{stock_price_manage.phone_fix_elements_4}}">
+                          <input type="text" name="stock_price" class="form-control" value="{{stock_price_manage.phone_fix_elements_price_4}}">
+                        </div>
+                      </div>
+                      {% endif %}
+                      {% if stock_price_manage.phone_fix_elements_5 == 'none' %}
+                      {% else %}
+                      <div class="col-md-3 col-sm-3 col-sx-6">
+                        <div class="col-md-8 col-sm-8 col-xs-6">
+                          <p>5 {% if stock_name_manage.phone_fix_elements_5 == 'none' %}{% else %}{{stock_name_manage.phone_fix_elements_5}} [{{stock_name_manage.phone_fix_elements_num_5}}] / {{stock_price_manage.phone_fix_elements_price_5}}{% endif %}</p>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                          <input type="text" name="stock_name" hidden value="{{stock_price_manage.phone_fix_elements_5}}">
+                          <input type="text" name="stock_price" class="form-control" value="{{stock_price_manage.phone_fix_elements_price_5}}">
+                        </div>
+                      </div>
+                      {% endif %}
+                      {% if stock_price_manage.phone_fix_elements_6 == 'none' %}
+                      {% else %}
+                      <div class="col-md-3 col-sm-3 col-sx-6">
+                        <div class="col-md-8 col-sm-8 col-xs-6">
+                          <p>6 {% if stock_name_manage.phone_fix_elements_6 == 'none' %}{% else %}{{stock_name_manage.phone_fix_elements_6}} [{{stock_name_manage.phone_fix_elements_num_6}}] / {{stock_price_manage.phone_fix_elements_price_6}}{% endif %}</p>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                          <input type="text" name="stock_name" hidden value="{{stock_price_manage.phone_fix_elements_6}}">
+                          <input type="text" name="stock_price" class="form-control" value="{{stock_price_manage.phone_fix_elements_price_6}}">
+                        </div>
+                      </div>
+                      {% endif %}
+                      {% if stock_price_manage.phone_fix_elements_7 == 'none' %}
+                      {% else %}
+                      <div class="col-md-3 col-sm-3 col-sx-6">
+                        <div class="col-md-8 col-sm-8 col-xs-6">
+                          <p>7 {% if stock_name_manage.phone_fix_elements_7 == 'none' %}{% else %}{{stock_name_manage.phone_fix_elements_7}} [{{stock_name_manage.phone_fix_elements_num_7}}] / {{stock_price_manage.phone_fix_elements_price_7}}{% endif %}</p>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                          <input type="text" name="stock_name" hidden value="{{stock_price_manage.phone_fix_elements_7}}">
+                          <input type="text" name="stock_price" class="form-control" value="{{stock_price_manage.phone_fix_elements_price_7}}">
+                        </div>
+                      </div>
+                      {% endif %}
+                      {% if stock_price_manage.phone_fix_elements_8 == 'none' %}
+                      {% else %}
+                      <div class="col-md-3 col-sm-3 col-sx-6">
+                        <div class="col-md-8 col-sm-8 col-xs-6">
+                          <p>8 {% if stock_name_manage.phone_fix_elements_8 == 'none' %}{% else %}{{stock_name_manage.phone_fix_elements_8}} [{{stock_name_manage.phone_fix_elements_num_8}}] / {{stock_price_manage.phone_fix_elements_price_8}}{% endif %}</p>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                          <input type="text" name="stock_name" hidden value="{{stock_price_manage.phone_fix_elements_8}}">
+                          <input type="text" name="stock_price" class="form-control" value="{{stock_price_manage.phone_fix_elements_price_8}}">
+                        </div>
+                      </div>
+                      {% endif %}
+                      {% if stock_price_manage.phone_fix_elements_9 == 'none' %}
+                      {% else %}
+                      <div class="col-md-3 col-sm-3 col-sx-6">
+                        <div class="col-md-8 col-sm-8 col-xs-6">
+                          <p>9 {% if stock_name_manage.phone_fix_elements_9 == 'none' %}{% else %}{{stock_name_manage.phone_fix_elements_9}} [{{stock_name_manage.phone_fix_elements_num_9}}] / {{stock_price_manage.phone_fix_elements_price_9}}{% endif %}</p>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                          <input type="text" name="stock_name" hidden value="{{stock_price_manage.phone_fix_elements_9}}">
+                          <input type="text" name="stock_price" class="form-control" value="{{stock_price_manage.phone_fix_elements_price_9}}">
+                        </div>
+                      </div>
+                      {% endif %}
+                      {% if stock_price_manage.phone_fix_elements_10 == 'none' %}
+                      {% else %}
+                      <div class="col-md-3 col-sm-3 col-sx-6">
+                        <div class="col-md-8 col-sm-8 col-xs-6">
+                          <p>10 {% if stock_name_manage.phone_fix_elements_10 == 'none' %}{% else %}{{stock_name_manage.phone_fix_elements_10}} [{{stock_name_manage.phone_fix_elements_num_10}}] / {{stock_price_manage.phone_fix_elements_price_10}}{% endif %}</p>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                          <input type="text" name="stock_name" hidden value="{{stock_price_manage.phone_fix_elements_10}}">
+                          <input type="text" name="stock_price" class="form-control" value="{{stock_price_manage.phone_fix_elements_price_10}}">
+                        </div>
+                      </div>
+                      {% endif %}
+                      {% if stock_price_manage.phone_fix_elements_11 == 'none' %}
+                      {% else %}
+                      <div class="col-md-3 col-sm-3 col-sx-6">
+                        <div class="col-md-8 col-sm-8 col-xs-6">
+                          <p>11 {% if stock_name_manage.phone_fix_elements_11 == 'none' %}{% else %}{{stock_name_manage.phone_fix_elements_11}} [{{stock_name_manage.phone_fix_elements_num_11}}] / {{stock_price_manage.phone_fix_elements_price_11}}{% endif %}</p>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                          <input type="text" name="stock_name" hidden value="{{stock_price_manage.phone_fix_elements_11}}">
+                          <input type="text" name="stock_price" class="form-control" value="{{stock_price_manage.phone_fix_elements_price_11}}">
+                        </div>
+                      </div>
+                      {% endif %}
+                      {% if stock_price_manage.phone_fix_elements_12 == 'none' %}
+                      {% else %}
+                      <div class="col-md-3 col-sm-3 col-sx-6">
+                        <div class="col-md-8 col-sm-8 col-xs-6">
+                          <p>12 {% if stock_name_manage.phone_fix_elements_12 == 'none' %}{% else %}{{stock_name_manage.phone_fix_elements_12}} [{{stock_name_manage.phone_fix_elements_num_12}}] / {{stock_price_manage.phone_fix_elements_price_12}}{% endif %}</p>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                          <input type="text" name="stock_name" hidden value="{{stock_price_manage.phone_fix_elements_12}}">
+                          <input type="text" name="stock_price" class="form-control" value="{{stock_price_manage.phone_fix_elements_price_12}}">
+                        </div>
+                      </div>
+                      {% endif %}
+                      {% if stock_price_manage.phone_fix_elements_13 == 'none' %}
+                      {% else %}
+                      <div class="col-md-3 col-sm-3 col-sx-6">
+                        <div class="col-md-8 col-sm-8 col-xs-6">
+                          <p>13 {% if stock_name_manage.phone_fix_elements_13 == 'none' %}{% else %}{{stock_name_manage.phone_fix_elements_13}} [{{stock_name_manage.phone_fix_elements_num_13}}] / {{stock_price_manage.phone_fix_elements_price_13}}{% endif %}</p>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                          <input type="text" name="stock_name" hidden value="{{stock_price_manage.phone_fix_elements_13}}">
+                          <input type="text" name="stock_price" class="form-control" value="{{stock_price_manage.phone_fix_elements_price_13}}">
+                        </div>
+                      </div>
+                      {% endif %}
+                      {% if stock_price_manage.phone_fix_elements_14 == 'none' %}
+                      {% else %}
+                      <div class="col-md-3 col-sm-3 col-sx-6">
+                        <div class="col-md-8 col-sm-8 col-xs-6">
+                          <p>14 {% if stock_name_manage.phone_fix_elements_14 == 'none' %}{% else %}{{stock_name_manage.phone_fix_elements_14}} [{{stock_name_manage.phone_fix_elements_num_14}}] / {{stock_price_manage.phone_fix_elements_price_14}}{% endif %}</p>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                          <input type="text" name="stock_name" hidden value="{{stock_price_manage.phone_fix_elements_14}}">
+                          <input type="text" name="stock_price" class="form-control" value="{{stock_price_manage.phone_fix_elements_price_14}}">
+                        </div>
+                      </div>
+                      {% endif %}
+                      {% if stock_price_manage.phone_fix_elements_15 == 'none' %}
+                      {% else %}
+                      <div class="col-md-3 col-sm-3 col-sx-6">
+                        <div class="col-md-8 col-sm-8 col-xs-6">
+                          <p>15 {% if stock_name_manage.phone_fix_elements_15 == 'none' %}{% else %}{{stock_name_manage.phone_fix_elements_15}} [{{stock_name_manage.phone_fix_elements_num_15}}] / {{stock_price_manage.phone_fix_elements_price_15}}{% endif %}</p>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                          <input type="text" name="stock_name" hidden value="{{stock_price_manage.phone_fix_elements_15}}">
+                          <input type="text" name="stock_price" class="form-control" value="{{stock_price_manage.phone_fix_elements_price_15}}">
+                        </div>
+                      </div>
+                      {% endif %}
+                      {% if stock_price_manage.phone_fix_elements_16 == 'none' %}
+                      {% else %}
+                      <div class="col-md-3 col-sm-3 col-sx-6">
+                        <div class="col-md-8 col-sm-8 col-xs-6">
+                          <p>16 {% if stock_name_manage.phone_fix_elements_16 == 'none' %}{% else %}{{stock_name_manage.phone_fix_elements_16}} [{{stock_name_manage.phone_fix_elements_num_16}}] / {{stock_price_manage.phone_fix_elements_price_16}}{% endif %}</p>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                          <input type="text" name="stock_name" hidden value="{{stock_price_manage.phone_fix_elements_16}}">
+                          <input type="text" name="stock_price" class="form-control" value="{{stock_price_manage.phone_fix_elements_price_16}}">
+                        </div>
+                      </div>
+                      {% endif %}
+                      {% if stock_price_manage.phone_fix_elements_17 == 'none' %}
+                      {% else %}
+                      <div class="col-md-3 col-sm-3 col-sx-6">
+                        <div class="col-md-8 col-sm-8 col-xs-6">
+                          <p>17 {% if stock_name_manage.phone_fix_elements_17 == 'none' %}{% else %}{{stock_name_manage.phone_fix_elements_17}} [{{stock_name_manage.phone_fix_elements_num_17}}] / {{stock_price_manage.phone_fix_elements_price_17}}{% endif %}</p>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                          <input type="text" name="stock_name" hidden value="{{stock_price_manage.phone_fix_elements_17}}">
+                          <input type="text" name="stock_price" class="form-control" value="{{stock_price_manage.phone_fix_elements_price_17}}">
+                        </div>
+                      </div>
+                      {% endif %}
+                      {% if stock_price_manage.phone_fix_elements_18 == 'none' %}
+                      {% else %}
+                      <div class="col-md-3 col-sm-3 col-sx-6">
+                        <div class="col-md-8 col-sm-8 col-xs-6">
+                          <p>18 {% if stock_name_manage.phone_fix_elements_18 == 'none' %}{% else %}{{stock_name_manage.phone_fix_elements_18}} [{{stock_name_manage.phone_fix_elements_num_18}}] / {{stock_price_manage.phone_fix_elements_price_18}}{% endif %}</p>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                          <input type="text" name="stock_name" hidden value="{{stock_price_manage.phone_fix_elements_18}}">
+                          <input type="text" name="stock_price" class="form-control" value="{{stock_price_manage.phone_fix_elements_price_18}}">
+                        </div>
+                      </div>
+                      {% endif %}
+                      {% if stock_price_manage.phone_fix_elements_19 == 'none' %}
+                      {% else %}
+                      <div class="col-md-3 col-sm-3 col-sx-6">
+                        <div class="col-md-8 col-sm-8 col-xs-6">
+                          <p>19 {% if stock_name_manage.phone_fix_elements_19 == 'none' %}{% else %}{{stock_name_manage.phone_fix_elements_19}} [{{stock_name_manage.phone_fix_elements_num_19}}] / {{stock_price_manage.phone_fix_elements_price_19}}{% endif %}</p>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                          <input type="text" name="stock_name" hidden value="{{stock_price_manage.phone_fix_elements_19}}">
+                          <input type="text" name="stock_price" class="form-control" value="{{stock_price_manage.phone_fix_elements_price_19}}">
+                        </div>
+                      </div>
+                      {% endif %}
+                      {% if stock_price_manage.phone_fix_elements_20 == 'none' %}
+                      {% else %}
+                      <div class="col-md-3 col-sm-3 col-sx-6">
+                        <div class="col-md-8 col-sm-8 col-xs-6">
+                          <p>20 {% if stock_name_manage.phone_fix_elements_20 == 'none' %}{% else %}{{stock_name_manage.phone_fix_elements_20}} [{{stock_name_manage.phone_fix_elements_num_20}}] / {{stock_price_manage.phone_fix_elements_price_20}}{% endif %}</p>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                          <input type="text" name="stock_name" hidden value="{{stock_price_manage.phone_fix_elements_20}}">
+                          <input type="text" name="stock_price" class="form-control" value="{{stock_price_manage.phone_fix_elements_price_20}}">
+                        </div>
+                      </div>
+                      {% endif %}                      
+                    </div>
+                    <hr/>
+                    <div class="col-md-offset-10 col-md-2 col-sm-offset-10 col-sm-2 col-sx-6">     
+                        <button type="submit" class="btn btn-success">更新 </button>{% csrf_token %}
+                    </div>
+                    </form>
+                 {% else %}
+
+              <table id="datatable" class="table table-striped table-bordered">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>手機型號</th>
+                    {% for title_list in title_lists %}
+                    <th>{{title_list}}</th>
+                    {% endfor %}
+                    {% if page_edit == 'True' %}
+                    <th>更新時間</th>
+                    <th></th>
+                    {% endif %}
+                  </tr>
+                </thead>
+                <tbody>
+ 
+                  {% for count_list,stock_name_manage,stock_price_manage,phone_name_list in stock_name_manage_lists %}
+                  <tr>
+                    <td rowspan="2">{{count_list}}</td>
+                    <td rowspan="2"><a href="/manage/stock_price_manage_edit/{{stock_name_manage.phone_name_num}}"><center>{{phone_name_list}}<br/></center></td>
+                    <td>{% if stock_name_manage.phone_fix_elements_1 == 'none' %}
+                    {% else %}
+                    {{stock_name_manage.phone_fix_elements_1}}
+                    {% endif %}</td>
+                    <td>{% if stock_name_manage.phone_fix_elements_2 == 'none' %}
+                    {% else %}
+                    {{stock_name_manage.phone_fix_elements_2}}
+                    {% endif %}</td>
+                    <td>{% if stock_name_manage.phone_fix_elements_3 == 'none' %}
+                    {% else %}
+                    {{stock_name_manage.phone_fix_elements_3}}
+                    {% endif %}</td>
+                    <td>{% if stock_name_manage.phone_fix_elements_4 == 'none' %}
+                    {% else %}
+                    {{stock_name_manage.phone_fix_elements_4}}
+                    {% endif %}</td>
+                    <td>{% if stock_name_manage.phone_fix_elements_5 == 'none' %}
+                    {% else %}
+                    {{stock_name_manage.phone_fix_elements_5}}
+                    {% endif %}</td>
+                    <td>{% if stock_name_manage.phone_fix_elements_6 == 'none' %}
+                    {% else %}
+                    {{stock_name_manage.phone_fix_elements_6}}
+                    {% endif %}</td>
+                    <td>{% if stock_name_manage.phone_fix_elements_7 == 'none' %}
+                    {% else %}
+                    {{stock_name_manage.phone_fix_elements_7}}
+                    {% endif %}</td>
+                    <td>{% if stock_name_manage.phone_fix_elements_8 == 'none' %}
+                    {% else %}
+                    {{stock_name_manage.phone_fix_elements_8}}
+                    {% endif %}</td>
+                    <td>{% if stock_name_manage.phone_fix_elements_9 == 'none' %}
+                    {% else %}
+                    {{stock_name_manage.phone_fix_elements_9}}
+                    {% endif %}</td>
+                    <td>{% if stock_name_manage.phone_fix_elements_10 == 'none' %}
+                    {% else %}
+                    {{stock_name_manage.phone_fix_elements_10}}
+                    {% endif %}</td>
+                    <td>{% if stock_name_manage.phone_fix_elements_11 == 'none' %}
+                    {% else %}
+                    {{stock_name_manage.phone_fix_elements_11}}
+                    {% endif %}</td>
+                    <td>{% if stock_name_manage.phone_fix_elements_12 == 'none' %}
+                    {% else %}
+                    {{stock_name_manage.phone_fix_elements_12}}
+                    {% endif %}</td>
+                    <td>{% if stock_name_manage.phone_fix_elements_13 == 'none' %}
+                    {% else %}
+                    {{stock_name_manage.phone_fix_elements_13}}
+                    {% endif %}</td>
+                    <td>{% if stock_name_manage.phone_fix_elements_14 == 'none' %}
+                    {% else %}
+                    {{stock_name_manage.phone_fix_elements_14}}
+                    {% endif %}</td>
+                    <td>{% if stock_name_manage.phone_fix_elements_15 == 'none' %}
+                    {% else %}
+                    {{stock_name_manage.phone_fix_elements_15}}
+                    {% endif %}</td>
+                    <td>{% if stock_name_manage.phone_fix_elements_16 == 'none' %}
+                    {% else %}
+                    {{stock_name_manage.phone_fix_elements_16}}
+                    {% endif %}</td>
+                    <td>{% if stock_name_manage.phone_fix_elements_17 == 'none' %}
+                    {% else %}
+                    {{stock_name_manage.phone_fix_elements_17}}
+                    {% endif %}</td>
+                    <td>{% if stock_name_manage.phone_fix_elements_18 == 'none' %}
+                    {% else %}
+                    {{stock_name_manage.phone_fix_elements_18}}
+                    {% endif %}</td>
+                    <td>{% if stock_name_manage.phone_fix_elements_19 == 'none' %}
+                    {% else %}
+                    {{stock_name_manage.phone_fix_elements_19}}
+                    {% endif %}</td>
+                    <td>{% if stock_name_manage.phone_fix_elements_20 == 'none' %}
+                    {% else %}
+                    {{stock_name_manage.phone_fix_elements_20}}
+                    {% endif %}</td>
+                  </tr>
+                  <tr>
+                    <td>{% if stock_price_manage.phone_fix_elements_1 == 'none' %}
+                    {% else %}
+                    {{stock_price_manage.phone_fix_elements_price_1}}
+                    {% endif %}</td>
+                    <td>{% if stock_price_manage.phone_fix_elements_2 == 'none' %}
+                    {% else %}
+                    {{stock_price_manage.phone_fix_elements_price_2}}
+                    {% endif %}</td>
+                    <td>{% if stock_price_manage.phone_fix_elements_3 == 'none' %}
+                    {% else %}
+                    {{stock_price_manage.phone_fix_elements_price_3}}
+                    {% endif %}</td>
+                    <td>{% if stock_price_manage.phone_fix_elements_4 == 'none' %}
+                    {% else %}
+                    {{stock_price_manage.phone_fix_elements_price_4}}
+                    {% endif %}</td>
+                    <td>{% if stock_price_manage.phone_fix_elements_5 == 'none' %}
+                    {% else %}
+                    {{stock_price_manage.phone_fix_elements_price_5}}
+                    {% endif %}</td>
+                    <td>{% if stock_price_manage.phone_fix_elements_6 == 'none' %}
+                    {% else %}
+                    {{stock_price_manage.phone_fix_elements_price_6}}
+                    {% endif %}</td>
+                    <td>{% if stock_price_manage.phone_fix_elements_7 == 'none' %}
+                    {% else %}
+                    {{stock_price_manage.phone_fix_elements_price_7}}
+                    {% endif %}</td>
+                    <td>{% if stock_price_manage.phone_fix_elements_8 == 'none' %}
+                    {% else %}
+                    {{stock_price_manage.phone_fix_elements_price_8}}
+                    {% endif %}</td>
+                    <td>{% if stock_price_manage.phone_fix_elements_9 == 'none' %}
+                    {% else %}
+                    {{stock_price_manage.phone_fix_elements_price_9}}
+                    {% endif %}</td>
+                    <td>{% if stock_price_manage.phone_fix_elements_10 == 'none' %}
+                    {% else %}
+                    {{stock_price_manage.phone_fix_elements_price_10}}
+                    {% endif %}</td>
+                    <td>{% if stock_price_manage.phone_fix_elements_11 == 'none' %}
+                    {% else %}
+                    {{stock_price_manage.phone_fix_elements_price_11}}
+                    {% endif %}</td>
+                    <td>{% if stock_price_manage.phone_fix_elements_12 == 'none' %}
+                    {% else %}
+                    {{stock_price_manage.phone_fix_elements_price_12}}
+                    {% endif %}</td>
+                    <td>{% if stock_price_manage.phone_fix_elements_13 == 'none' %}
+                    {% else %}
+                    {{stock_price_manage.phone_fix_elements_price_13}}
+                    {% endif %}</td>
+                    <td>{% if stock_price_manage.phone_fix_elements_14 == 'none' %}
+                    {% else %}
+                    {{stock_price_manage.phone_fix_elements_price_14}}
+                    {% endif %}</td>
+                    <td>{% if stock_price_manage.phone_fix_elements_15 == 'none' %}
+                    {% else %}
+                    {{stock_price_manage.phone_fix_elements_price_15}}
+                    {% endif %}</td>
+                    <td>{% if stock_price_manage.phone_fix_elements_16 == 'none' %}
+                    {% else %}
+                    {{stock_price_manage.phone_fix_elements_price_16}}
+                    {% endif %}</td>
+                    <td>{% if stock_price_manage.phone_fix_elements_17 == 'none' %}
+                    {% else %}
+                    {{stock_price_manage.phone_fix_elements_price_17}}
+                    {% endif %}</td>
+                    <td>{% if stock_price_manage.phone_fix_elements_18 == 'none' %}
+                    {% else %}
+                    {{stock_price_manage.phone_fix_elements_price_18}}
+                    {% endif %}</td>
+                    <td>{% if stock_price_manage.phone_fix_elements_19 == 'none' %}
+                    {% else %}
+                    {{stock_price_manage.phone_fix_elements_price_19}}
+                    {% endif %}</td>
+                    <td>{% if stock_price_manage.phone_fix_elements_20 == 'none' %}
+                    {% else %}
+                    {{stock_price_manage.phone_fix_elements_price_20}}
+                    {% endif %}</td>
+                  </tr>
+                  {% endfor %}
+                  {% endif %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+  <!-- Datatables -->
+  <script src="/static/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+  <script src="/static/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+  <script src="/static/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+  <script src="/static/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+  <script src="/static/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+  <script src="/static/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+  <script src="/static/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+  <script src="/static/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+  <script src="/static/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+  <script src="/static/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+  <script src="/static/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+  <script src="/static/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+  <script src="/static/vendors/jszip/dist/jszip.min.js"></script>
+  <script src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>
+  <script src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>
+{% endblock javascripts %}

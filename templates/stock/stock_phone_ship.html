@@ -1,0 +1,236 @@
+{% extends "app/base_site.html" %}
+
+{% block title %} Table Dynamic {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+  <link href="/static/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+  <link href="/static/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+  <link href="/static/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+  <link href="/static/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+  <link href="/static/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+{% endblock stylesheets %}
+
+{% block content %}
+  <div class="right_col" role="main">
+    <div class="">
+      <div class="page-title">
+        <div class="title_left">
+          <h3>NG品查詢</h3>
+        </div>
+
+        <div class="title_right">
+          <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search for...">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button">Go!</button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="clearfix"></div>
+
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>NG品查詢</h2>
+              <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Settings 1</a>
+                    </li>
+                    <li><a href="#">Settings 2</a>
+                    </li>
+                  </ul>
+                </li>
+                <li><a class="close-link"><i class="fa fa-close"></i></a>
+                </li>
+              </ul>
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+              <div class="well" style="overflow: auto">
+                <div class="col-md-12">
+                  <form class="form-horizontal" action="/manage/stock_phone_ship/" method="POST">
+                    <fieldset>
+                      <label class="control-label col-md-1 col-sm-1 col-xs-6">日期: </label>
+                      <div class="col-md-4">
+                        <div class="control-group">
+                          <div class="controls">
+                            <div class="input-prepend input-group">
+                              <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
+                              <input type="text" style="width: 200px" name="reservation" id="reservation" class="form-control" value="{{date_text}}" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-2 col-sm-2 col-xs-6">
+                        <select class="form-control" name="date_month">
+                            <option value="none">請選擇</option>
+                            {% for date_month_list,date_month_text_list in date_month_text_zip %}
+                            <option value="{{date_month_list}}" {% if date_month_list == date_month %} selected {% endif %}>{{date_month_text_list}}</option>
+                            {% endfor %}
+                        </select>
+                      </div>
+                      <div class="col-md-3 col-sm-3 col-xs-6">
+                        全部:<input type="radio" class="flat" name="status" id="status" value="ALL" checked="" required /> 
+                        未出庫:<input type="radio" class="flat" name="status" id="status" value="NO" />
+                        已出庫:<input type="radio" class="flat" name="status" id="status" value="YES" />
+                      </div>
+                      <div class="col-md-1 col-sm-1 col-xs-6">
+                        <button type="submit" class="btn btn-success">送出</button>{% csrf_token %}
+                      </div>
+                    </fieldset>
+                    <div class="form-group">
+                      <label class="control-label col-md-1 col-sm-1 col-xs-6">手機品牌 </label>
+                      <div class="col-md-4 col-sm-4 col-xs-6">
+                        <select class="form-control" name="phone_brand_choice">
+                            <option value="none">全部</option>
+                          {% for phone_brand_list in phone_brand_lists %}
+                            <option value="{{phone_brand_list.phone_brand_num}}" {% if phone_brand_list.phone_brand_num == phone_brand_choice %} selected {% endif %} >{{phone_brand_list.phone_brand_name}}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                      <label class="control-label col-md-1 col-sm-1 col-xs-6">廠商 </label>
+                      <div class="col-md-4 col-sm-4 col-xs-6">
+                        <select class="form-control" name="stock_fix_manu_choice">
+                            <option value="none">全部</option>
+                          {% for stock_fix_manu_list in stock_fix_manu_lists %}
+                            <option value="{{stock_fix_manu_list.stock_fix_manu_num}}" {% if stock_fix_manu_list.stock_fix_manu_name == stock_fix_manu_choice %} selected {% endif %}>{{stock_fix_manu_list.stock_fix_manu_name}}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                    </div>
+
+                  </form>
+                </div>
+              </div>
+            <form class="form-horizontal" action="/manage/stock_phone_ship_form/" method="POST">
+            <div class="datatable-buttons">
+              <a class="btn btn-default buttons-print btn-sm" tabindex="0" aria-controls="datatable-buttons" href="#"><span>Print</span></a>
+              <div class="row">
+                <div class="col-md-8 col-sm-8 col-xs-6">
+                  {% if stock_fix_manu_text %}<p>日期 {{start_date|date:"m/d/Y"}} ~ {{end_date|date:"m/d/Y"}}  類別:{{status_text}}  手機:{{phone_brand_text}}  廠商: {{stock_fix_manu_text}} </p>
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-6">
+                  <div class="col-md-offset-6 col-md-6 col-sm-offset-6 col-sm-6 col-xs-12">
+                    <button type="submit" class="btn btn-success">確定出貨</button>{% csrf_token %}
+                  </div>
+                </div>
+                {% endif %}
+              </div>
+              
+              <table id="datatable-checkbox" class="table table-striped jambo_table bulk_action">
+                <thead>
+                  <tr class="headings">
+                    <th><input type="checkbox" class="flat" id="check-all"></th>
+                    <th>單號</th>
+                    <th>手機型號</th>
+                    <th>庫存紀錄名稱</th>
+                    <th>廠商名稱</th>
+                    <th>建立者</th>
+                    <th>建立日期</th>
+                    <th>功能</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for count_list,stock_num_list,stock_phone_ng_list,phone_name_list in stock_phone_ng_lists_zip %}
+                  <tr>
+                    <td><input type="checkbox" class="flat" id="table_records" name="table_records" value="{{stock_phone_ng_list.purchase_num}}"></td>
+                    <td><p {% if stock_phone_ng_list.alive == True %} class="text-danger" {% else %} class="text-primary" {% endif %}>{{stock_phone_ng_list.purchase_num}}</p></td>
+                    <td><p {% if stock_phone_ng_list.alive == True %} class="text-danger" {% else %} class="text-primary" {% endif %}>{{phone_name_list}}</p></td>
+                    <td><p {% if stock_phone_ng_list.alive == True %} class="text-danger" {% else %} class="text-primary" {% endif %}>{{stock_num_list}}</p></td>
+                    <td><p {% if stock_phone_ng_list.alive == True %} class="text-danger" {% else %} class="text-primary" {% endif %}>{{stock_phone_ng_list.stock_fix_manu_num}}</p></td>
+                    <td><p {% if stock_phone_ng_list.alive == True %} class="text-danger" {% else %} class="text-primary" {% endif %}>{{stock_phone_ng_list.log_user}}</p></td>                    
+                    <td><p {% if stock_phone_ng_list.alive == True %} class="text-danger" {% else %} class="text-primary" {% endif %}>{{stock_phone_ng_list.create_at|date:"Y/m/d H:i:s"}}</p></td>
+                    <td><p {% if stock_phone_ng_list.alive == False %} class="text-primary" {% endif %}> {% if stock_phone_ng_list.alive == True %}<button type="button" class="btn btn-link btn-xs" data-toggle="modal" data-target="#Modal{{stock_phone_ng_list.purchase_num}}"><p class="text-danger">未出貨</p></button>{% else %}<button type="button" class="btn btn-link btn-xs" data-toggle="modal" data-target="#Modal{{stock_phone_ng_list.purchase_num}}"><p class="text-primary">已出貨</p></button>{% endif %}</p></td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+                
+              </table>
+            </form>
+          </div>
+            </div>
+          </div>
+        </div>
+        
+
+        
+
+<!-- Trigger the modal with a button -->
+      
+
+      <!-- Modal -->
+      {% for stock_phone_ng_list in stock_phone_ng_lists %}
+      <div id="Modal{{stock_phone_ng_list.purchase_num}}" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">單號:<small>{{stock_phone_ng_list.purchase_num}}</small></h4>
+            </div>
+<!--             <div class="modal-body">
+              <form class="form-horizontal" action="/post/manage/stock_phone_ship/{{stock_phone_ng_list.purchase_num}}" method="POST">
+                  <label class="col-md-3 col-sm-3 col-xs-6">出貨紀錄: </label>
+                  <br />
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                    <textarea class="form-control" rows="5" id="finish_comment" style="resize: none;" name="finish_comment"></textarea>
+                  </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-success">確定</button>{% csrf_token %}
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+              </form>
+ -->            <div class="modal-body">
+<!--               <div class="col-md-12 col-sm-12 col-xs-12">              
+                <iframe src="http://146.148.75.24:5000/info/stock_phone_ship_info/{{stock_phone_ng_list.purchase_num}}" scrolling="auto"></iframe>
+              </div>
+ -->          <div class="embed-responsive embed-responsive-16by9">
+                <iframe class="embed-responsive-item" src="/info/stock_phone_ship_info/{{stock_phone_ng_list.purchase_num}}"></iframe>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>              
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+  <!-- Datatables -->
+  <script src="/static/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+  <script src="/static/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+  <script src="/static/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+  <script src="/static/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+  <script src="/static/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+  <script src="/static/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+  <script src="/static/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+  <script src="/static/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+  <script src="/static/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+  <script src="/static/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+  <script src="/static/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+  <script src="/static/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+  <script src="/static/vendors/jszip/dist/jszip.min.js"></script>
+  <script src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>
+  <script src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>
+{% endblock javascripts %}

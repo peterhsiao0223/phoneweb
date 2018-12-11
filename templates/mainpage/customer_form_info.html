@@ -1,0 +1,403 @@
+{% extends "app/base_site.html" %}
+
+{% block content %}
+  <div class="right_col" role="main">
+    <div class="">
+      <div class="page-title">
+        <div class="title_left">
+          <h3>維修表單 </h3>
+        </div>
+
+        <div class="title_right">
+          <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search for...">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button">Go!</button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <div class="col-md-4 col-sm-4 col-xs-6"><h2>單號 : {{customer_lists.costomer_sn}} </div><div class="col-md-7 col-sm-7 col-xs-6"><p class="small text-right">時間: {{date_now}}</p></div></h2>
+              <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Settings 1</a>
+                    </li>
+                    <li><a href="#">Settings 2</a>
+                    </li>
+                  </ul>
+                </li>
+                <li><a class="close-link"><i class="fa fa-close"></i></a>
+                </li>
+              </ul>
+              <div class="clearfix"></div>
+            </div>
+            <div id="wizard" class="form_wizard wizard_horizontal">
+                <ul class="wizard_steps">
+                  <li>
+                    <a href="#step-1" class="{{step_1}}">
+                      <span class="step_no">1</span>
+                      <span class="step_descr">
+                                        收件<br />
+                                        <small>{{step_1_text|date:"Y/m/d H:i:s"}}</small>
+                                    </span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#step-2" class="{{step_2}}">
+                      <span class="step_no">2</span>
+                      <span class="step_descr">
+                                        工程師接單<br />
+                                        <small>{{step_2_text|date:"Y/m/d H:i:s"}}</small>
+                                    </span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#step-3" class="{{step_3}}">
+                      <span class="step_no">3</span>
+                      <span class="step_descr">
+                                        完工結案<br />
+                                        <small>{{step_3_text|date:"Y/m/d H:i:s"}}</small>
+                                    </span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#step-4" class="{{step_4}}">
+                      <span class="step_no">4</span>
+                      <span class="step_descr">
+                                        通知客戶<br />
+                                        <small>{{step_4_text|date:"Y/m/d H:i:s"}}</small>
+                                    </span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#step-5" class="{{step_5}}">
+                      <span class="step_no">5</span>
+                      <span class="step_descr">
+                                        客戶取件<br />
+                                        <small>{{step_5_text|date:"Y/m/d H:i:s"}}</small>
+                                    </span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            <div class="x_content">
+              <br />
+              <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                <div class="row">
+                  <label class="control-label col-md-2 col-sm-2 col-xs-12" for="customer_name"><p class="lead">客戶基本資料</p>
+                  </label>
+                  <br/>
+                  <hr class="col-md-8 col-sm-8 col-xs-12">
+                </div>
+                <div class="row">
+                  <div class="form-group">
+                    <label class="control-label col-md-2 col-sm-2 col-xs-12" for="customer_name">顧客姓名
+                    </label>
+                    <div class="col-md-2 col-sm-2 col-xs-12">
+                      <input type="text" id="customer_name" required="required" class="form-control col-md-2 col-sm-2 col-xs-12" name="customer_name" value="{{customer_lists.customer_name}}" disabled>
+                    </div>
+<!--                   </div>
+                  <div class="form-group"> -->
+                    <label class="control-label col-md-1 col-sm-1 col-xs-12" for="customer_phone_num">手機號碼
+                    </label>
+                    <div class="col-md-2 col-sm-2 col-xs-12">
+                      <input type="text" id="customer_phone_num" name="customer_phone_num" class="form-control col-md-2 col-sm-2 col-xs-12" value="{{customer_lists.customer_phone_num}}" disabled>
+                    </div>
+
+                    <label class="control-label col-md-1 col-sm-1 col-xs-12" for="gender">性別
+                    </label>
+                    <div class="col-md-2 col-sm-2 col-xs-12">
+                      <input type="text" id="gender" name="gender" class="form-control col-md-2 col-sm-2 col-xs-12" value="{% if customer_lists.gender ==  True %}男性{% elif customer_lists.gender ==  False %}女性 {% endif%}" disabled>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <label class="control-label col-md-2 col-sm-2 col-xs-12" for="customer_name"><p class="lead">維修資料</p>
+                  </label>
+                  <br/>
+                  <hr class="col-md-8 col-sm-8 col-xs-12">
+                </div>
+                <div class="row">
+                  <div class="form-group">
+                    <label class="control-label col-md-2 col-sm-2 col-xs-12" for="customer_name">手機品牌
+                    </label>
+                    <div class="col-md-2 col-sm-2 col-xs-12">
+                      <input type="text" id="customer_name" class="form-control col-md-2 col-sm-2 col-xs-12" name="phone_brand_num" value="{{customer_lists.phone_brand_num}}" disabled>
+                    </div>
+<!--                   </div>
+                  <div class="form-group"> -->
+                    <label class="control-label col-md-1 col-sm-1 col-xs-12" for="customer_phone_num">手機型號
+                    </label>
+                    <div class="col-md-2 col-sm-2 col-xs-12">
+                      <input type="text" id="customer_phone_num" name="phone_name_num" class="form-control col-md-2 col-sm-2 col-xs-12" value="{{customer_lists.phone_name_num}}" disabled>
+                    </div>
+
+                    <label class="control-label col-md-1 col-sm-1 col-xs-12" for="gender">手機顏色
+                    </label>
+                    <div class="col-md-2 col-sm-2 col-xs-12">
+                      <input type="text" id="phone_color_name" name="phone_color_name" class="form-control col-md-2 col-sm-2 col-xs-12" value="{{customer_lists.phone_color}}" disabled>
+                    </div>
+                  </div>
+                </div>
+                 <div class="row">
+                  <div class="form-group">
+                    <label class="control-label col-md-2 col-sm-2 col-xs-12" for="customer_phone_num">密碼
+                    </label>
+                    <div class="col-md-2 col-sm-2 col-xs-12">
+                      <input type="text" id="customer_phone_num" name="phone_name_num" class="form-control col-md-2 col-sm-2 col-xs-12" value="{{customer_lists.phone_pw}}" disabled>
+                    </div>
+                    <label class="control-label col-md-1 col-sm-1 col-xs-12" for="customer_phone_num">序號
+                    </label>
+                    <div class="col-md-2 col-sm-2 col-xs-12">
+                      <input type="text" id="customer_phone_num" name="phone_name_num" class="form-control col-md-2 col-sm-2 col-xs-12" value="{{customer_lists.fix_part_sn_num}}" disabled>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group">
+                    <label class="control-label col-md-2 col-sm-2 col-xs-12" for="customer_phone_num">維修工程師
+                    </label>
+                    <div class="col-md-2 col-sm-2 col-xs-12">
+                      <input type="text" id="customer_phone_num" name="phone_name_num" class="form-control col-md-2 col-sm-2 col-xs-12" value="{{customer_lists.engineer}}" disabled>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="form-group">
+                    <label class="col-md-2 col-sm-2 col-xs-12 control-label">維修項目</label>
+                    <div class="col-md-10 col-sm-10 col-xs-12">
+                      <div class="checkbox">
+                        <!-- <label> -->
+                        {% for phone_fix in phones_fix %}
+                        {% if phone_fix.fix_part_name in customer_lists.fix_part %}
+                        <div class="col-md-2 col-sm-2 col-xs-6">
+                          <input type="checkbox" class="flat" id="fix_part" name="fix_part" value="{{phone_fix.fix_part_num}}" checked disabled > {{phone_fix.fix_part_name}}
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group">
+                    <label class="control-label col-md-2 col-sm-2 col-xs-12">故障描述 </label>
+                    <div class="col-md-8 col-sm-8 col-xs-12">
+                          <textarea class="form-control" rows="5" id="phone_comment" style="resize: none;" name="phone_comment" disabled>{{customer_lists.bg_note}}</textarea>
+                      <!-- <input type="text" id="phone_des" name="phone_des"> -->
+                    </div>
+                  </div>
+                </div>
+
+                 <div class="row">
+                  <div class="form-group">
+                    <label class="control-label col-md-2 col-sm-2 col-xs-12" for="total_price">總金額
+                    </label>
+                    <div class="col-md-2 col-sm-2 col-xs-12">
+                      <input type="text" id="total_price" name="total_price" class="form-control col-md-2 col-sm-2 col-xs-12" value="{{customer_lists.total_price}}" disabled>
+                    </div>
+
+                    <label class="control-label col-md-1 col-sm-1 col-xs-12" for="deposit">訂金
+                    </label>
+                    <div class="col-md-2 col-sm-2 col-xs-12">
+                      <input type="text" id="deposit" name="deposit" class="form-control col-md-2 col-sm-2 col-xs-12" value="{{customer_lists.deposit}}" disabled>
+                    </div>
+
+                    <label class="control-label col-md-1 col-sm-1 col-xs-12" for="plus_buy_price">加購金額
+                    </label>
+                    <div class="col-md-2 col-sm-2 col-xs-12">
+                      <input type="text" id="deposit" name="plus_buy_price_total" class="form-control col-md-2 col-sm-2 col-xs-12" value="{{plus_buy_price_total}}" disabled>
+                    </div>
+                  </div>
+                </div>
+                {% if plus_buy_status == True %}
+                <div class="row">
+                  <div class="form-group">
+                    <label class="col-md-2 col-sm-2 col-xs-12 control-label">加購區</label>
+                    <div class="col-md-10 col-sm-10 col-xs-12">
+                      <div class="checkbox">
+                        <!-- <label> -->
+                        {% for plus_buy,plus_buy_price in plus_buy_zip %}
+                          <div class="col-md-4 col-sm-4">
+                            <input type="checkbox" class="flat" id="plus_buy" name="plus_buy" value="{{accessories_name.accessories_num}}" checked disabled> {{plus_buy}}({{plus_buy_price}})
+                          </div>
+                        {% endfor %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {% else %}
+                {% endif %}
+                <div class="row">
+                  <label class="control-label col-md-2 col-sm-2 col-xs-12" for="customer_name"><p class="lead">功能區</p>
+                  </label>
+                  <br/>
+                  <hr class="col-md-8 col-sm-8 col-xs-12">
+                </div>
+              </form>
+                <div class="row">
+                  <div class="form-group">
+                    <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" action="/post/customer_form_recive/" method="POST">
+                      <input type="text" id="costomer_sn" name="costomer_sn" value="{{customer_lists.costomer_sn}}" hidden>
+                      <label class="col-md-2 col-sm-2 col-xs-12 control-label"></label>
+                      <div class="col-md-10 col-sm-10 col-xs-12">
+                        {% if customer_lists.customer_receive == False %}
+                        <a type="button" class="btn btn-info btn-md" href="/customer_form_edit/{{customer_lists.costomer_sn}}">編輯資料</a>
+                        {% elif customer_lists.customer_receive == True %}
+                        <button type="button" class="btn btn-info btn-md" disabled>編輯資料</button>
+                        {% endif %}
+                        {% if customer_lists.finish_status == False and customer_lists.engineer != '' and  customer_lists.engineer == user.username %}
+                        <a type="button" class="btn btn-primary btn-md" href="/manage/engineer_fix_info/{{customer_lists.costomer_sn}}">完工key單</a>
+                        {% elif customer_lists.finish_status == True %}
+                        <button type="button" class="btn btn-primary btn-md"  data-toggle="modal" data-target="#Modalsee">查看紀錄</button>
+                        {% if customer_lists.field_1 == '' %}
+                          <input type="text" id="action" name="action" value="notice" hidden>
+                          <button type="submit" class="btn btn-success btn-md">通知客戶</button>{% csrf_token %}
+                        {% elif customer_lists.field_1 != '' %}
+                          <button type="button" class="btn btn-success btn-md" disabled>已通知客戶</button>
+                          {% if customer_lists.customer_receive == False %}
+                          <input type="text" id="action" name="action" value="recive" hidden>
+                          <button type="submit" class="btn btn-warning btn-md">客戶取件</button>{% csrf_token %}
+                          {% elif customer_lists.customer_receive == True %}
+                          <button type="button" class="btn btn-warning btn-md" disabled>已取件</button>
+                          {% endif %}
+                          {% endif %}
+                        {% endif %}
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                <div class="row">
+                  <label class="control-label col-md-2 col-sm-2 col-xs-12" for="customer_name"><p class="lead">備註</p>
+                  </label>
+                  <br/>
+                  <hr class="col-md-8 col-sm-8 col-xs-12">
+                </div>
+                <div class="row">
+                  <div class="form-group">
+                    <div class="col-md-offset-1 col-sm-offset-1 col-md-10 col-sm-10 col-xs-12">
+                          <textarea class="form-control" rows="5" name="phone_comment" style="resize: none;" disabled>
+    {% for log in user_log_losts %}{% if log.type_log == 'system' %}{{log.created_at|date:"Y/m/d H:i:s"}}  {{log.sign_user}}  ====={{log.log_text}}====={% else %}{{log.created_at|date:"Y/m/d H:i:s"}}  {{log.sign_user}}  {{log.log_text}}{% endif %}
+    {% endfor %}{{customer_lists.created_at|date:"Y/m/d H:i:s"}}  =====建立維修單=====</textarea>
+                    </div>
+                  </div>
+                </div>
+              </form>
+                <div class="row">
+              <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" action="/post/customer_info/" method="POST">
+
+                  <div class="form-group">
+                    <div class="col-md-offset-1 col-sm-offset-1 col-md-9 col-sm-9 col-xs-12">
+                      <input type="text" id="log_text" name="log_text" class="form-control col-md-12 col-sm-12 col-xs-12">
+                      <input type="text" id="costomer_sn" name="costomer_sn" value="{{customer_lists.costomer_sn}}" hidden>
+                    </div>
+                    <div class="col-md-2 col-sm-2 col-xs-12">
+                      <button type="submit" class="btn btn-success">送出</button>{% csrf_token %}
+                      
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    {% if customer_lists.finish_status == True %}
+      <div id="Modalsee" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">維修單號:{{customer_lists.costomer_sn}}</h4>
+            </div>
+            <div class="modal-body">
+              <form class="form-horizontal" action="/post/customer_table_engineer/{{engineer_none_list.costomer_sn}}" method="POST">
+                  <div class="row">
+                    <div class="col-md-3 col-sm-3 col-xs-3"><p class="lead">維修手機 : </p></div>
+                      <div class="col-md-9 col-sm-3 col-xs-9">
+                        <p class="lead">{{customer_lists.phone_brand_num}}/{{customer_lists.phone_name_num}}/{{customer_lists.phone_color}}
+                        </p>
+                      </div>
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                    </div>
+                    <div class="col-md-3 col-sm-3 col-xs-3"><p class="lead">維修項目 : </p></div>
+                      <div class="col-md-9 col-sm-3 col-xs-9">
+                        <p class="lead">{{customer_lists.fix_part|cut:"["|cut:"]"|cut:"'"}}
+                        </p>
+                      </div>
+                    <div class="col-md-3 col-sm-3 col-xs-3"><p class="lead">維修工程師 : </p></div>
+                      <div class="col-md-9 col-sm-3 col-xs-9">
+                        <p class="lead">{{engineer_name}}
+                        </p>
+                      </div>
+
+
+                {% if engineer_lists.engineer_2 %}
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                      <br>
+                      <hr>
+                    </div>
+                    <div class="col-md-3 col-sm-3 col-xs-3"><p class="lead">轉單工程師 : </p></div>
+                      <div class="col-md-3 col-sm-3 col-xs-3">
+                        <p class="lead">{{engineer_lists.engineer_2}}</p>
+                      </div>
+                      <div class="col-md-12 col-sm-12 col-xs-12">
+                      </div>
+                      <div class="col-md-3 col-sm-3 col-xs-3"><p class="lead">外包項目 : </p></div>
+                      <div class="col-md-9 col-sm-9 col-xs-9">
+                          <p class="lead">{{engineer_lists.engineer_fix_2|cut:"["|cut:"]"|cut:"'"}}</p>
+                      </div>
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                    </div>
+                    <div class="col-md-3 col-sm-3 col-xs-3"><p class="lead">利潤分配 : </p></div>
+                      <div class="col-md-3 col-sm-3 col-xs-3">
+                        <p class="lead">{{engineer_lists.case_percent_1}}/{{engineer_lists.case_percent_2}}</p>
+                      </div>
+                    {% endif %}
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                      <br>
+                      <hr>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-3 col-sm-3 col-xs-3"><p class="lead">使用料件 : </p></div>
+                        <div class="col-md-9 col-sm-3 col-xs-9">
+                          <p class="lead">{% for engineer_fix_part_name,engineer_fix_part_num in stock_part_zip %}{{engineer_fix_part_name}}[{{engineer_fix_part_num}}]{% endfor %}
+                          </p>
+                        </div>
+                      <div class="col-md-12 col-sm-12 col-xs-12">
+                      </div>
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                    </div>
+                  </div>
+                </div>
+                
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>
+            </div>
+              </form>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+  
+
+{% endblock content %}

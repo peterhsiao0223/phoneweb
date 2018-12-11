@@ -1,0 +1,194 @@
+{% extends "app/base_site.html" %}
+
+{% block title %} Tables {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+{% endblock stylesheets %}
+
+{% block content %}
+  <div class="right_col" role="main">
+    <div class="">
+      <div class="page-title">
+        <div class="title_left">
+          <h3>手機管理</h3>
+        </div>
+
+        <div class="title_right">
+          <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search for...">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button">Go!</button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+        <div class="clearfix"></div>
+
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>手機管理 / {{phone_brand.phone_brand_name}} </h2>
+              <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Settings 1</a>
+                    </li>
+                    <li><a href="#">Settings 2</a>
+                    </li>
+                  </ul>
+                </li>
+                <li><a class="close-link"><i class="fa fa-close"></i></a>
+                </li>
+              </ul>
+              <div class="clearfix"></div>
+            </div>
+
+            <div class="x_content">
+
+              <div class="row">
+                <div class="panel-group col-md-12 col-sm-12 col-xs-12" id="accordion">
+                  <div class="panel panel-default">
+                      <div class="panel-heading">
+                          <h4 class="panel-title">
+                              <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">新增手機 / {{phone_brand.phone_brand_name}} </a>
+                          </h4>
+                      </div>
+                      <div id="collapseOne" class="panel-collapse collapse">
+                      <div class="panel-body">
+                        <div class="form-group">
+                          <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" method="POST" action="/post/phone_name_create/{{phone_brand.phone_brand_num}}">
+
+                            <div class="form-group">
+                              <label class="col-md-2 col-sm-2 col-xs-4" for="first-name">手機型號 </label> 
+                              <div class="col-md-4 col-sm-4 col-xs-6">
+                                <input type="text" id="phone_name" name="phone_name" required="required" class="form-control col-md-7 col-xs-12">
+                              </div>
+                            </div>
+
+                            <div class="form-group">
+                              <label class="col-md-2 col-sm-2 col-xs-4">庫存查詢</label>
+                              <div class="col-md-4 col-sm-4 col-xs-6">
+                                <label>
+                                  <input type="radio" class="flat" name="stock" value="on" checked="" /> 建檔
+                                  <input type="radio" class="flat" name="stock" value="off" /> 不建檔
+                                </label>
+                              </div>
+                            </div>
+<!--                             <div class="control-group">
+                              <label class="col-md-2 col-sm-2 col-xs-4">手機顏色</label>
+                              <div class="col-md-4 col-sm-4 col-xs-6">
+                                <input id="tags_1" name="phone_color" type="text" class="tags form-control" value=" " />
+                                <div id="suggestions-container" style="position: relative; float: left; width: 250px; margin: 10px;"></div>
+                              </div>
+                            </div>
+ -->
+
+                            <div class="form-group">                           
+                              <div class="col-md-offset-2 col-md-10 col-sm-offset-2 col-sm-10 col-xs-12">
+                                <button type="submit" class="btn btn-success">送出</button>{% csrf_token %}
+                              </div>
+                            </div>
+
+                          </form>
+                        </div>                        
+                      </div>
+                      </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="table-responsive">
+                  <table class="table table-striped jambo_table bulk_action">
+                    <thead>
+                      <tr class="headings">
+                        <th>
+                          <input type="checkbox" id="check-all" class="flat">
+                        </th>
+                        <th class="column-title">編號 </th>
+                        <th class="column-title">廠牌名稱 </th>
+                        <th class="column-title">手機型號 </th>
+                        <!-- <th class="column-title">手機顏色 </th> -->
+                        <th class="column-title">最後更新日期 </th>
+                        <th class="column-title no-link last"><span class="nobr">動作</span>
+                        </th>
+                        <th class="bulk-actions" colspan="7">
+                          <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
+                        </th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                    {% if page_edit == 'True' %}
+                    <form id="demo-form2" class="form-horizontal form-label-left" action="/post/manage/phone_name_edit/{{phone_brand.phone_brand_num}}/{{phone_name_list.phone_name_num}}" method="POST">
+                      <tr class="even pointer">
+                        <td class="a-center ">
+                          <input type="checkbox" class="flat" name="table_records">
+                        </td>
+                        <!-- <input type="hidden" class="form-control" value="{{phone_brand.phone_brand_num}}" name="phone_brand_num_edit"> -->
+                        <!-- <input type="hidden" class="form-control" value="{{phone_name_list.phone_name_num}}" name="phone_name_num_edit"> -->
+                        <td class=" ">{{phone_name_list.phone_name_num}}</td>
+                        <td class=" ">{{phone_brand.phone_brand_name}}</td>
+                        <td class=" "><input type="text" name="phone_name_edit" class="form-control" value="{{phone_name_list.phone_name}}" ></td>
+                                
+                        <!-- <td class=" ">
+                          <input id="tags_1" name="phone_color_edit" type="text" class="tags form-control" value="{{phone_name_list.phone_color}}" />
+                          <div id="suggestions-container" style="position: relative; float: left; width: 250px; margin: 10px;"></div>
+                        </td> -->
+                        <td class=" ">{{phone_name_list.update_at|date:"Y/m/d H:i:s"}}</td>
+                        <td class=" last"><button type="submit" class="btn btn-success">更新 </button>{% csrf_token %}
+                        </td>
+                      </tr>
+                    </form>
+                    {% else %}
+                      {% for phone_name_list in phone_name_lists %}
+                      <tr class="even pointer">
+                        <td class="a-center ">
+                          <input type="checkbox" class="flat" name="table_records">
+                        </td>
+                        <td class=" ">{{phone_name_list.phone_name_num}}</td>
+                        <td class=" ">{{phone_name_list.phone_brand_name}}</td>
+                        <td class=" ">{{phone_name_list.phone_name}}</td>
+                        <!-- <td class=" ">{{phone_name_list.phone_color}}</td> -->
+                        <td class=" ">{{phone_name_list.update_at|date:"Y/m/d H:i:s"}}</td>
+                        <td class=" last">{% if phone_name_list.phone_name_num in stock_phone_list %}<a href="/manage/stock_manage_edit/{{phone_name_list.phone_name_num}}">庫存編輯{% else %}<a href="/stock/stock_manage_init/{{phone_name_list.phone_name_num}}">庫存建檔 </a> {% endif %}<a href="/post/manage/phone_name_del/{{phone_brand.phone_brand_num}}/{{phone_name_list.phone_name_num}}"> / 刪除 </a>
+                        </td>
+                      </tr>
+  <!--                     <tr class="odd pointer">
+                        <td class="a-center ">
+                          <input type="checkbox" class="flat" name="table_records">
+                        </td>
+                        <td class=" ">121000039</td>
+                        <td class=" ">May 23, 2014 11:30:12 PM</td>
+                        <td class=" ">121000208 <i class="success fa fa-long-arrow-up"></i>
+                        </td>
+                        <td class=" ">John Blank L</td>
+                        <td class=" last"><a href="#">View</a>
+                        </td>
+                      </tr> -->
+                      {% endfor %}
+                    {% endif %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+{% endblock javascripts %}
+
+
+

@@ -1,0 +1,52 @@
+{% extends "app/base_site.html" %}
+
+{% block title %} Login {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+  <!-- Animate.css -->
+  <link href="/static/vendors/animate.css/animate.min.css" rel="stylesheet">
+{% endblock stylesheets %}
+
+{% block body_class %}login{% endblock body_class %}
+
+{% block body %}
+  <div>
+    <a class="hiddenanchor" id="signup"></a>
+    <a class="hiddenanchor" id="signin"></a>
+
+    <div class="login_wrapper">
+      <!-- <div class="animate form login_form"> -->
+        <section class="login_content">
+          <form id="demo-form2" class="form-horizontal form-label-left" action="/login/post" method="POST">
+            <h1>Login Form</h1>
+            <div>
+              <input type="text" class="form-control" placeholder="Username" name="username" required="" />
+            </div>
+            <div>
+              <input type="password" class="form-control" placeholder="Password" name="password" required="" />
+            </div>
+            <div>
+              <!-- <a class="btn btn-default submit">登入</a> -->
+              <button type="submit" class="btn btn-default">登入</button>{% csrf_token %}
+              <!-- <a class="reset_pass" href="#">Lost your password?</a> -->
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="separator">
+              <div class="clearfix"></div>
+              <br />
+
+              <div>
+                <h1><i class="fa fa-paw"></i> Gentelella Alela!</h1>
+                <p>©2016 All Rights Reserved. Gentelella Alela! is a Bootstrap 3 template. Privacy and Terms</p>
+              </div>
+            </div>
+          </form>
+        </section>
+      <!-- </div> -->
+    </div>
+  </div>
+{% endblock body %}
+

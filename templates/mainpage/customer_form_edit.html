@@ -1,0 +1,248 @@
+{% extends "app/base_site.html" %}
+
+{% block content %}
+  <div class="right_col" role="main">
+    <div class="">
+      <div class="page-title">
+        <div class="title_left">
+          <h3>編輯維修表單 </h3>
+        </div>
+
+        <div class="title_right">
+          <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search for...">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button">Go!</button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <div class="col-md-4 col-sm-4 col-xs-6"><h2>單號 : {{customer_lists.costomer_sn}} </div><div class="col-md-7 col-sm-7 col-xs-6"><p class="small text-right">時間: {{date_now}}</p></div></h2>
+              <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Settings 1</a>
+                    </li>
+                    <li><a href="#">Settings 2</a>
+                    </li>
+                  </ul>
+                </li>
+                <li><a class="close-link"><i class="fa fa-close"></i></a>
+                </li>
+              </ul>
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+              <br />
+
+              <!-- <form id="demo-form2" class="form-horizontal form-label-left" action="/customer_form/" method="POST"> -->
+
+
+
+
+<!--                 <div class="form-group">
+                  <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                    <button type="submit" class="btn btn-success">更新</button> {% csrf_token %} 
+                  </div>
+                </div> -->
+              <!-- </form> -->
+
+
+              <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" action="/post/customer_review/" method="POST">
+
+                <div class="form-group">
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12">手機品牌 </label>
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    <input type="text" id="customer_name" disabled class="form-control col-md-7 col-xs-12" name="customer_name" value="{{customer_lists.phone_brand_num}}">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12">手機型號 </label>
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    <select class="form-control" name="phone_name" id="phone_name">
+                      {% if phone_brand_name %}
+                        <option value="none">Choose option</option>
+                      {% for phone_name_list,phone_brand_num_list in phone_name_lists %}
+                        <option value="{{phone_brand_num_list}}" {% if customer_lists.phone_name_num == phone_name_list%} selected {% endif %} >{{phone_name_list}}</option>
+                      {% endfor %}
+                      {% else %}
+                        <option value="none">請選擇手機品牌</option>
+                      {% endif %}
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="customer_name">顧客姓名 <span class="required">*</span>
+                  </label>
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    <input type="text" id="customer_name" required="required" class="form-control col-md-7 col-xs-12" name="customer_name" value="{{customer_lists.customer_name}}">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="customer_phone_num">手機號碼 <span class="required">*</span>
+                  </label>
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    <input type="text" id="customer_phone_num" name="customer_phone_num" required="required" class="form-control col-md-7 col-xs-12" value="{{customer_lists.customer_phone_num}}">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12">性別</label>
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div id="gender" class="btn-group" data-toggle="buttons">
+                       {% if customer_lists.gender == True %}
+                      <label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                        <input type="radio" name="gender" value="male" checked> 男性
+                      </label>
+                      {% elif customer_lists.gender == False %}
+                      <label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                        <input type="radio" name="gender" value="female" checked> 女性
+                      </label>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12">手機顏色 </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">                  
+                      <div class="radio">
+                          {% for phone_color_list in phone_color_lists %}
+                          <div class="col-md-2 col-sm-2 col-xs-3">
+                            <input type="radio" class="flat" name="phone_color" value="{{phone_color_list.phone_color_num}}" {% if customer_lists.phone_color == phone_color_list.phone_color_name %} checked {% endif %}> {{phone_color_list.phone_color_name}} 
+                          </div>               
+                          {% endfor %}
+                          <!-- <div class="col-md-12 col-sm-12 col-xs-12"> -->
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                              <input type="radio" class="flat" name="phone_color" value="else"> 其他
+                              <input type="text" id="color_else" name="color_else">
+                            </div>
+                            <!-- <div class="col-md-6 col-sm-6 col-xs-12"> -->
+                              
+                            <!-- </div> -->
+                          <!-- </div> -->
+                      </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="col-md-3 col-sm-3 col-xs-12 control-label">維修項目</label>
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="checkbox">
+                      <!-- <label> -->
+                      {% for phone_fix in phones_fix %}
+                      <div class="col-md-3 col-sm-3 col-xs-6">
+                        <input type="checkbox" class="flat" id="fix_part" name="fix_part" value="{{phone_fix.fix_part_num}}" {% if phone_fix.fix_part_name in customer_lists.fix_part %} checked {% endif %}> {{phone_fix.fix_part_name}}
+                      </div>
+                      {% endfor %}
+
+                      <!-- </label> -->
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12">密碼 </label>
+                  <div class="col-md-3 col-sm-3 col-xs-12">
+                    <input type="text" id="phone_pw" name="phone_pw" value="{{customer_lists.phone_pw}}">
+                  </div>
+                  <div class="col-md-3 col-sm-3 col-xs-12">
+                    <label class="control-label">序號 </label>
+                    <input type="text" id="phone_sn" name="phone_sn" value="{{customer_lists.fix_part_sn_num}}">
+                  </div>
+                </div>                
+
+<!--                 <div class="form-group">
+  
+                </div>
+ -->
+                <div class="form-group">
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12">總金額 </label>
+                  <div class="col-md-3 col-sm-3 col-xs-12">
+                    <input type="text" id="total_price" name="total_price" value="0">
+                  </div>
+                  <div class="col-md-3 col-sm-3 col-xs-12">
+                    <label class="control-label">訂金 </label>
+                    <input type="text" id="deposit" name="deposit" value="0">
+                  </div>
+                </div>                
+
+                <div class="form-group">
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12">故障描述 </label>
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                        <textarea class="form-control" rows="5" id="phone_comment" style="resize: none;" name="phone_comment">{{customer_lists.bg_note}}</textarea>
+                    <!-- <input type="text" id="phone_des" name="phone_des"> -->
+                  </div>
+                </div>
+
+                <div class="panel-group col-md-offset-1 col-md-10 col-sm-offset-1 col-sm-10 col-xs-12" id="accordion">
+                  <div class="panel panel-default">
+                      <div class="panel-heading">
+                          <h4 class="panel-title">
+                              <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="text-center">加購區</a>
+                          </h4>
+                      </div>
+                      <div id="collapseOne" class="panel-collapse collapse">
+                      <div class="panel-body">
+                        <div class="form-group">
+                          <!-- <label class="control-label col-md-3 col-sm-3 col-xs-12">加購項目 </label> -->
+                            <div class="checkbox">
+                              {% for plus_buy,plus_buy_price in plus_buy_zip %}
+                              <div class="col-md-3 col-sm-3 col-xs-12">
+                                <div class="col-md-7 col-sm-7">
+                                  <input type="checkbox" class="flat" id="plus_buy" name="plus_buy" value="{{accessories_name.accessories_num}}" checked> {{plus_buy}}
+                                </div>
+                                <div class="col-md-5 col-sm-5">
+                                  <input type="text" class="col-md-12 col-sm-12" id="plus_buy_price" name="plus_buy_price" value="{{plus_buy_price}}">
+                                </div>
+                              </div>
+
+                              {% endfor %}
+                              {% for accessories_name in accessories_names %}
+                              {% if accessories_name.accessories_name not in customer_lists.plus_buy %}
+                              <div class="col-md-3 col-sm-3 col-xs-12">
+                                <div class="col-md-7 col-sm-7">
+                                  <input type="checkbox" class="flat" id="plus_buy" name="plus_buy" value="{{accessories_name.accessories_num}}"> {{accessories_name.accessories_name}}
+                                </div>
+                                <div class="col-md-5 col-sm-5">
+                                  <input type="text" class="col-md-12 col-sm-12" id="plus_buy_price" name="plus_buy_price" value="0">
+                                </div>
+                              </div>
+                              {% endif %}
+                              {% endfor %}                      
+                            </div>
+                        </div>                        
+                      </div>
+                      </div>
+                  </div>
+                </div>
+              </br></br>
+                <div class="ln_solid"></div>
+                <div class="form-group">
+                  <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                    <input type="hidden" class="flat" id="data_type" name="data_type" value="edit">
+                    <input type="hidden" class="flat" id="user_sn" name="user_sn" value="{{customer_lists.costomer_sn}}">
+                    <input type="hidden" class="flat" id="phone_brand" name="phone_brand" value="{{customer_lists.phone_brand_num}}">
+  		              <button type="submit" class="btn btn-success">送出</button>{% csrf_token %}
+                    <button class="btn btn-primary" type="reset">重設</button>
+                  </div>
+                </div>
+
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+{% endblock content %}
